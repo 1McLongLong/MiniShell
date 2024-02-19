@@ -11,19 +11,28 @@
 
 typedef enum    e_token_type
 {
-	TOKEN_DOLLAR, // 0
-	TOKEN_DOLLAR_IN, // 1
-	TOKEN_DOLLAR_OUT, // 2
-	TOKEN_COMMAND, // 3
-	TOKEN_ARG, // 4
-	TOKEN_STRING, // 5
-	TOKEN_PIPE, // 6
-	TOKEN_INFILE, // 7
-	TOKEN_OUTFILE, // 8
-	TOKEN_APPEND, // 9
-	TOKEN_HERDOC, // 10
-	TOKEN_AMPERSAND // 11
+	DOLLAR, // 0
+	DOLLAR_IN, // 1
+	DOLLAR_OUT, // 2
+	COMMAND, // 3
+	ARG, // 4
+	STRING, // 5
+	PIPE, // 6
+	REDIN, // 7
+	REDOUT, // 8
+	APPEND, // 9
+	HERDOC, // 10
+	DELIMITER, // 11
+	INFILE, // 12
+	OUTFILE, // 13
 }             t_token_type;
+
+typedef struct s_node
+{
+	t_token_type type;
+	char *str;
+	struct s_node *next;
+} x_node;
 
 typedef struct node
 {
@@ -57,7 +66,9 @@ void	add_to_list(t_dblst *list, char *data);
 void print_list(t_dblst *list);
 void add_list(char **str, t_dblst *list);
 void	free_list(t_dblst *list);
+void print(x_node *list);
 
+x_node *tokenize_list(char *str);
 void lexer(char *line, t_dblst *list);
 void epur_str(char *str); 
 int str_len(const char *str);

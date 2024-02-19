@@ -7,9 +7,12 @@ int fix_input(char *line)
 	if (line[0] == '#')
 		return (0);
 	int i = 0;
+	int inside_quotes = 0;
 	while (line[i])
 	{
-		if (line[i] == '|' && line[i + 1] == '|')
+		if (line[i] == '"')
+			inside_quotes = !inside_quotes;
+		if (!inside_quotes && line[i] == '|' && line[i + 1] == '|')
 		{
 			printf("Syntax error!\n");
 			return (0);
@@ -69,48 +72,6 @@ char *fix_line(char *str)
 	return (result); 
 }
 
-void tokenize_my_list(t_dblst *list)
-{
-	t_node *head = list->head;
-	while (head)
-	{
-		int i = 0;
-		while(head->arg[i])
-		{
-			if (strstr(head->arg[i], "-"))
-			{
-				head->type = TOKEN_ARG;
-			}
-			else if (!(strcmp(head->arg[i], "<")))
-			{
-				head->type = TOKEN_INFILE;
-				head->arg[i + 1] = ;
-			}
-			else if (!(strcmp(head->arg[i], ">")))
-			{
-				head->type = TOKEN_OUTFILE;
-			}
-			else if (!(strcmp(head->arg[i], ">>")))
-			{
-				head->type = TOKEN_DGREAT;
-			}	
-			else if (!(strcmp(head->arg[i], "<<")))
-			{
-				head->type = TOKEN_DLESS;
-			}
-			else if (!(strcmp(head->arg[i], "&")))
-			{
-				head->type = TOKEN_AMPERSAND;
-			}
-			else
-				head->type = TOKEN_STRING;
-			i++;
-		}
-		head = head->next;
-	}
-}
-
-
 int check_quotes(char *input) 
 {
 	int singleQuotes = 0;
@@ -147,11 +108,6 @@ int check_quotes(char *input)
 	return 1;
 }
 
-/*
-void check_syntax(char *str)
-{
-	(void)str;
-}*/
 
 void remove_spaces_inq(char **str)
 {
@@ -203,34 +159,56 @@ void add_spaces_back(t_dblst *list)
 	}
 }
 
+void check_syntax(x_node *list)
+{
+	x_node *head = list;
+	while(head)
+	{
+		if ((head->type == REDIN && head->next && head->next->type == PIPE) ||
+			(head->type == REDOUT && head->next && head->next->type == PIPE) ||
+			(head->type == APPEND && head->next && head->next->type == PIPE) ||
+			(head->type == HERDOC && head->next && head->next->type == PIPE) ||
+			(head->type == PIPE && head->next && head->next->type == REDIN) ||
+			(head->type == PIPE && head->next && head->next->type == REDOUT) ||
+			(head->type == PIPE && head->next && head->next->type == APPEND) ||
+			(head->type == PIPE && head->next && head->next->type == HERDOC) ||
+			(head->type == PIPE && head->next == NULL) ||
+			(head->type == REDIN && head->next == NULL) ||
+			(head->type == REDOUT && head->next == NULL) ||
+			(head->type == APPEND && head->next == NULL) ||
+			(head->type == HERDOC && head->next == NULL))
+		{
+			printf("bash: syntax error near unexpected token\n");
+			break ;
+		}
+		head = head->next;
+	}
+}
 
 void lexer(char *line, t_dblst *list)
 {
 	(void)list;
+	x_node *p_list;
 	if (!(fix_input(line))) // || inside quotes is not working
 		return ;
 	char *fixed_line = fix_line(line);
 	if (!(check_quotes(fixed_line)))
 		return ;
-	//if (!(check_syntax(fixed_line)))
-	//return ;
 	//printf("%s\n", fixed_line);
-	char **str = ft_split(fixed_line, '|');
-	tokenize_my_list(fixed_line);
+	p_list = tokenize_list(fixed_line);
+	print(p_list);
+	check_syntax(p_list);
+	////char **str = ft_split(fixed_line, '|');
 	//int i = 0;
 	//while (str[i])
 	//printf("%s\n",str[i++]);
-	remove_spaces_inq(str);
+	////remove_spaces_inq(str);
 	//i = 0;
 	//while (str[i])
 	//printf("%s\n",str[i++]);
-	//char **test = ft_split(str[i], ' ');
-	//i = 0;
-	//while (test[i])
-	//printf("%s\n",test[i++]);
-	add_list(str, list);
-	add_spaces_back(list);
-	print_list(list);
+	////add_list(str, list);
+	////add_spaces_back(list);
+	////print_list(list);
 	//ft_free(str);
 	free(fixed_line);
 	return ;

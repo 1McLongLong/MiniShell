@@ -34,21 +34,6 @@ void	add_to_list(t_dblst *list, char *data)
 	}
 }
 
-int	ft_lstsize(t_dblst *lst)
-{
-	t_node	*temp;
-	int		size;
-
-	temp = lst->head;
-	size = 0;
-	while (temp != NULL)
-	{
-		size++;
-		temp = temp->next;
-	}
-	return (size);
-}
-
 void	free_list(t_dblst *list)
 {
 	t_node	*current;
@@ -92,6 +77,5 @@ void add_list(char **str, t_dblst *list)
 		i++;
 	}
 }
-
 
 
