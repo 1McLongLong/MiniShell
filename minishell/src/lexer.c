@@ -172,6 +172,7 @@ void check_syntax(x_node *list)
 			(head->type == PIPE && head->next && head->next->type == REDOUT) ||
 			(head->type == PIPE && head->next && head->next->type == APPEND) ||
 			(head->type == PIPE && head->next && head->next->type == HERDOC) ||
+			(head->type == PIPE && head->next && head->next->type == PIPE) ||
 			(head->type == PIPE && head->next == NULL) ||
 			(head->type == REDIN && head->next == NULL) ||
 			(head->type == REDOUT && head->next == NULL) ||
@@ -198,6 +199,8 @@ void lexer(char *line, t_dblst *list)
 	p_list = tokenize_list(fixed_line);
 	print(p_list);
 	check_syntax(p_list);
+	//print_env(*env_list);
+	expand(p_list);
 	////char **str = ft_split(fixed_line, '|');
 	//int i = 0;
 	//while (str[i])

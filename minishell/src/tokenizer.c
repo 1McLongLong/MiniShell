@@ -5,6 +5,7 @@ x_node *create_snode(char *data)
 	x_node *new_node = malloc(sizeof(x_node));
 	if (new_node == NULL)
 		return NULL;
+	new_node->type = 0;
 	new_node->str = strdup(data);
 	new_node->next = NULL;
 	return new_node;
@@ -18,7 +19,7 @@ x_node *add_to_slist(x_node *list, char *data)
 	if (list == NULL)
 		list = new_node;
 	else
-		{
+	{
 		x_node *current = list;
 		while (current->next != NULL)
 			current = current->next;
@@ -71,6 +72,7 @@ void tokenize_my_list(x_node *list)
 {
 	x_node *head = list;
 	head->type = COMMAND;
+	head = head->next;
 	while (head)
 	{
 		if (!(strcmp(head->str, "|")))
@@ -80,39 +82,39 @@ void tokenize_my_list(x_node *list)
 				break ;
 			head->next->type = COMMAND;
 		}
-		if (strstr(head->str, "-"))
+		else if (strstr(head->str, "-"))
 		{
 			head->type = ARG;
 		}
-		if (!(strcmp(head->str, "<")))
+		else if (!(strcmp(head->str, "<")))
 		{
 			head->type = REDIN;
 			if (head->next == NULL)
 				break ;
 			head->next->type = INFILE;
 		}
-		if (!(strcmp(head->str, ">")))
+		else if (!(strcmp(head->str, ">")))
 		{
 			head->type = REDOUT;
 			if (head->next == NULL)
 				break ;
 			head->next->type = OUTFILE;
 		}
-		if (!(strcmp(head->str, ">>")))
+		else if (!(strcmp(head->str, ">>")))
 		{
 			head->type = APPEND;
 				if (head->next == NULL)
 				break ;
 			head->next->type = DELIMITER;
 		}	
-		if (!(strcmp(head->str, "<<")))
+		else if (!(strcmp(head->str, "<<")))
 		{
 			head->type = HERDOC;
 			if (head->next == NULL)
 				break ;
 			head->next->type = DELIMITER;
 		}
-		else
+		else if (head->type == 0)
 			head->type = STRING;
 		head = head->next;
 	}

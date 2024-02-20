@@ -34,6 +34,12 @@ typedef struct s_node
 	struct s_node *next;
 } x_node;
 
+typedef struct b_node
+{
+	char *str;
+	struct b_node *next;
+} e_node;
+
 typedef struct node
 {
 	char *cmd;
@@ -66,8 +72,12 @@ void	add_to_list(t_dblst *list, char *data);
 void print_list(t_dblst *list);
 void add_list(char **str, t_dblst *list);
 void	free_list(t_dblst *list);
+void free_envlist(e_node *list);
 void print(x_node *list);
+void print_env(e_node *list);
 
+void expand(x_node *p_list);
+void get_env(e_node **env_list, char **env);
 x_node *tokenize_list(char *str);
 void lexer(char *line, t_dblst *list);
 void epur_str(char *str); 
