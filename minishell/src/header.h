@@ -68,6 +68,8 @@ void	ft_free(char **lst);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, char *src, size_t dstsize);
 char	*ft_strjoin(char *s1, char *s2);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+int	ft_isalpha(int c);
 
 t_node	*create_node(char *data);
 void	add_to_list(t_dblst *list, char *data);

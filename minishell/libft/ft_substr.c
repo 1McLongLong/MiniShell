@@ -29,9 +29,7 @@ static char	*ft_copy(char const *s, char *str, int start, size_t len)
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*str;
-	size_t	i;
 
-	i = 0;
 	if (s == NULL)
 		return (NULL);
 	if (ft_strlen(s) < start)
