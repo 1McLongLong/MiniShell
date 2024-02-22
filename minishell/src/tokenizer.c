@@ -30,6 +30,7 @@ x_node *add_to_slist(x_node *list, char *data)
 
 void add_slist(char *str, x_node **list)
 {
+	(void)list;
 	int i = 0;
 	char **split = ft_split(str, ' ');
 	while (split[i])
@@ -125,6 +126,7 @@ x_node *tokenize_list(char *str)
 {
 	x_node *list = NULL;
 	remove_spaces(str);
+	//printf("%s\n", str);
 	add_slist(str, &list);
 	tokenize_my_list(list);
 	//print(list);

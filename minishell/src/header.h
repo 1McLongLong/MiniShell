@@ -63,9 +63,11 @@ int		ft_printf(const char *format, ...);
 char	*get_next_line(int fd);
 int		ft_atoi(const char *str);
 char	**ft_split(char const *s, char c);
-char	*ft_strjoin(char const *s1, char const *s2);
+//char	*ft_strjoin(char const *s1, char const *s2);
 void	ft_free(char **lst);
 size_t	ft_strlen(const char *s);
+size_t	ft_strlcpy(char *dst, char *src, size_t dstsize);
+char	*ft_strjoin(char *s1, char *s2);
 
 t_node	*create_node(char *data);
 void	add_to_list(t_dblst *list, char *data);
@@ -84,7 +86,7 @@ void epur_str(char *str);
 int str_len(const char *str);
 int get_len(char *str);
 void fix_it_again(char *str);
-
+char* fix_quotes(char *input);
 
 
 

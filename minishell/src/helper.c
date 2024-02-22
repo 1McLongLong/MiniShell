@@ -123,29 +123,26 @@ int get_len(char *str)
 
 void fix_it_again(char *str)
 {
-    int i = 0;
-    int j = 0;
-    while (str[i])
-    {
-        if (str[i] == '>' && str[i + 1] == ' '  && str[i + 2] == ' ' && str[i + 3] == '>')
-        {
-            str[j] = str[i];
-            i += 3;
-            j++;
-        }
-        else if (str[i] == '<' && str[i + 1] == ' '  && str[i + 2] == ' ' && str[i + 3] == '<')
-        {
-            str[j] = str[i];
-            i += 3;
-            j++;
-        }
-        str[j] = str[i];
-        j++;
-        i++;
-    }
-    str[j] = '\0';
+	int i = 0;
+	int j = 0;
+	while (str[i])
+	{
+		if (str[i] == '>' && str[i + 1] == ' '  && str[i + 2] == ' ' && str[i + 3] == '>')
+		{
+			str[j] = str[i];
+			i += 3;
+			j++;
+		}
+		else if (str[i] == '<' && str[i + 1] == ' '  && str[i + 2] == ' ' && str[i + 3] == '<')
+		{
+			str[j] = str[i];
+			i += 3;
+			j++;
+		}
+		str[j] = str[i];
+		j++;
+		i++;
+	}
+	str[j] = '\0';
 }
-
-
-
 
