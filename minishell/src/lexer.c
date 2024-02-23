@@ -199,9 +199,9 @@ void lexer(char *line, t_dblst *list)
 	char *p_line = fix_quotes(fixed_line);
 	// printf("%s\n", p_line);
 	p_list = tokenize_list(p_line);
-	print(p_list);
+	// print(p_list);
 	check_syntax(p_list);
-  printf("------------\n");
+  // printf("------------\n");
 	expand(p_list);
 	////char **str = ft_split(fixed_line, '|');
 	//int i = 0;
