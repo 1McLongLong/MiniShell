@@ -63,7 +63,8 @@ void print(x_node *list)
 	temp = list;
 	while (temp)
 	{
-		printf("%s----------%d\n", temp->str, temp->type);
+		printf("%s ---------- %d\n", temp->str, temp->type);
+		// printf("%s\n", temp->str);
 		temp = temp->next; 
 	}
 }

@@ -34,6 +34,7 @@ typedef struct s_node
 	struct s_node *next;
 } x_node;
 
+// env
 typedef struct b_node
 {
 	char *str;
@@ -79,6 +80,7 @@ void	free_list(t_dblst *list);
 void free_envlist(e_node *list);
 void print(x_node *list);
 void print_env(e_node *list);
+void remove_quotes(x_node *p_list);
 
 void expand(x_node *p_list);
 void get_env(e_node **env_list, char **env);
