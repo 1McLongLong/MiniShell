@@ -205,6 +205,7 @@ void lexer(char *line, t_dblst *list)
   // printf("------------\n");
 	expand(p_list);
 	remove_quotes(p_list);
+	redirections(p_list);
 	print(p_list);
 	////char **str = ft_split(fixed_line, '|');
 	//int i = 0;

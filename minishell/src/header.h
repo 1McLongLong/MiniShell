@@ -31,6 +31,8 @@ typedef struct s_node
 {
 	t_token_type type;
 	char *str;
+	int fd_in;
+	int fd_out;
 	struct s_node *next;
 } x_node;
 
@@ -81,6 +83,7 @@ void free_envlist(e_node *list);
 void print(x_node *list);
 void print_env(e_node *list);
 void remove_quotes(x_node *p_list);
+void redirections(x_node *list);
 
 void expand(x_node *p_list);
 void get_env(e_node **env_list, char **env);

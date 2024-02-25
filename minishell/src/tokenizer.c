@@ -5,6 +5,8 @@ x_node *create_snode(char *data)
 	x_node *new_node = malloc(sizeof(x_node));
 	if (new_node == NULL)
 		return NULL;
+	new_node->fd_in = 0;
+	new_node->fd_out = 1;
 	new_node->type = 0;
 	new_node->str = strdup(data);
 	new_node->next = NULL;
@@ -63,7 +65,8 @@ void print(x_node *list)
 	temp = list;
 	while (temp)
 	{
-		printf("%s ---------- %d\n", temp->str, temp->type);
+		// printf("%s ---------- %d\n", temp->str, temp->type);
+		printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
 		// printf("%s\n", temp->str);
 		temp = temp->next; 
 	}
