@@ -84,6 +84,7 @@ void print(x_node *list);
 void print_env(e_node *list);
 void remove_quotes(x_node *p_list);
 void redirections(x_node *list);
+void expand_redir(char **str);
 
 void expand(x_node *p_list);
 void get_env(e_node **env_list, char **env);

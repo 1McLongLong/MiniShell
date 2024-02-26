@@ -13,7 +13,8 @@
 CC = cc 
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
-SRCF = $(addprefix src/, main.c list_utils.c helper.c lexer.c tokenizer.c env.c expand.c fix_quotes.c remove_quotes.c redirect.c)
+SRCF = $(addprefix src/, main.c list_utils.c helper.c lexer.c tokenizer.c env.c expand.c fix_quotes.c \
+			 remove_quotes.c redirect.c expand_redirect.c)
 GNL_SRCF = $(addprefix gnl/, get_next_line.c get_next_line_utils.c)
 PRINTF_SRCF = $(addprefix printf/, ft_printf.c ft_putchar.c ft_putstr.c ft_putnbr.c ft_put_hex.c \
 							ft_put_bighex.c ft_putnbr_u.c ft_print_add.c)

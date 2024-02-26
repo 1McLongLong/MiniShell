@@ -1,42 +1,62 @@
 #include "header.h"
 
-/*
+int delim_quotes(char *delim)
+{
+	int i;
+
+	i = 0;
+	while (delim[i])
+	{
+		if (delim[i] == '\"' || delim[i] == '\'')
+			return 0;
+		i++;
+	}
+	return (1);
+}
+
 void herdoc(x_node *list)
 {
   x_node *temp = list;
-  // Assuming that temp->next->str contains the delimiter for heredoc
-  const char *delimiter = temp->next->str;
-  // Create a temporary file
+  char *delimiter = temp->next->str;
   char temp_filename[] = "/tmp/heredoc_tempfile";
   int fd = open(temp_filename, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR);
   if (fd == -1) {
     perror("open");
     exit(EXIT_FAILURE);
   }
-  // Read input until the delimiter is encountered
-  char buffer[4096];
+  
+	char *buffer;
   while (1)
   {
-    printf("heredoc> ");  // You might want to customize this prompt
-    fgets(buffer, sizeof(buffer), stdin);
-
-    if (strcmp(buffer, delimiter) == 0) {
-      break;  // Stop reading when the delimiter is encountered
-    }
-
-    write(fd, buffer, strlen(buffer));
+		buffer = readline("> ");
+    if (strcmp(buffer, delimiter) == 0)
+		{
+			free(buffer);
+			break;
+		}
+		if (delim_quotes(delimiter))
+			expand_redir(&buffer);
+		write(fd, buffer, strlen(buffer));
+    write(fd, "\n", 1);
+		free(buffer);
   }
-  // Set the file descriptor for the next node in the list
   temp->next->fd_out = fd;
-  // Close the temporary file
-  close(fd);
-  // Unlink (delete) the temporary file
-  if (unlink(temp_filename) == -1) {
-    perror("unlink");
+	 // close(fd);
+  fd = open(temp_filename, O_RDONLY);
+  if (fd == -1) {
+    perror("open");
     exit(EXIT_FAILURE);
   }
+
+  char ch;
+  while (read(fd, &ch, 1) == 1) {
+    putchar(ch);
+  }
+  // close(fd);
+  unlink(temp_filename);
 }
-////////////
+
+/*
 while (true)
 {
   input_line = readline("> ");
@@ -55,69 +75,70 @@ while (true)
 }
 */
 
-void herdoc(x_node *list)
-{
-  x_node *temp = list;
-}
+// void herdoc(x_node *list)
+// {
+// 	x_node *temp = list;
+// }
 
 
 void check_opened_fd(x_node *list, x_node *last_fnode)
 {
-  x_node *temp = list;
+	x_node *temp;
 
-  while (temp != last_fnode)
-  {
-    if (temp->fd_out != 1)
-    {
-      close(temp->fd_out);
-      temp->fd_out = -1;
-    }
-    else if (temp->fd_in != 0)
-    {
-      close(temp->fd_in);
-      temp->fd_in = -1;
-    }
-    temp = temp->next;
-  }
+	temp = list;
+	while (temp != last_fnode)
+	{
+		if (temp->fd_out != 1)
+		{
+			close(temp->fd_out);
+			temp->fd_out = -1;
+		}
+		else if (temp->fd_in != 0)
+		{
+			close(temp->fd_in);
+			temp->fd_in = -1;
+		}
+		temp = temp->next;
+	}
 }
 
 
 void redirections(x_node *list)
 {
-  x_node *temp;
-  temp = list;
+	x_node *temp;
+	temp = list;
 
-  while (temp)
-  {
-    if (strcmp(temp->str, ">") == 0)
-    {
-      check_opened_fd(list, temp);
-      int fd = open(temp->next->str, O_CREAT | O_WRONLY | O_TRUNC);
-      if (fd == -1)
-        perror("ERROR");
-      temp->next->fd_out = fd;
-    }
-    else if (strcmp(temp->str, "<") == 0)
-    {
-      check_opened_fd(list, temp);
-      int fd = open(temp->next->str, O_RDONLY);
-      if (fd == -1)
-        perror("ERROR");
-      temp->next->fd_out = fd;
-    }
-    else if (strcmp(temp->str, ">>") == 0)
-    {
-      check_opened_fd(list, temp);
-      int fd = open(temp->next->str, O_CREAT | O_APPEND | O_WRONLY);
-      if (fd == -1)
-        perror("ERROR");
-      temp->next->fd_out = fd;
-    }
-    else if (strcmp(temp->str, "<<") == 0)
-    {
-      check_opened_fd(list, temp);
-      herdoc(temp);
-    }
-    temp = temp->next;
-  }
+	while (temp)
+	{
+		if (strcmp(temp->str, ">") == 0)
+		{
+			check_opened_fd(list, temp);
+			int fd = open(temp->next->str, O_CREAT | O_RDWR);
+			if (fd == -1)
+				perror("ERROR");
+			temp->next->fd_out = fd;
+		}
+		else if (strcmp(temp->str, "<") == 0)
+		{
+			check_opened_fd(list, temp);
+			int fd = open(temp->next->str, O_CREAT | O_RDONLY);
+			if (fd == -1)
+				perror("ERROR");
+			temp->next->fd_out = fd;
+		}
+		else if (strcmp(temp->str, ">>") == 0)
+		{
+			check_opened_fd(list, temp);
+			int fd = open(temp->next->str, O_CREAT | O_RDWR | O_TRUNC);
+			if (fd == -1)
+				perror("ERROR");
+			temp->next->fd_out = fd;
+		}
+		else if (strcmp(temp->str, "<<") == 0)
+		{
+			check_opened_fd(list, temp);
+			herdoc(temp);
+		}
+		temp = temp->next;
+	}
 }
