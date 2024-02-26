@@ -34,7 +34,7 @@ void add_slist(char *str, x_node **list)
 {
 	(void)list;
 	int i = 0;
-	char **split = ft_split(str, ' ');
+	char **split = token_split(str, ' ');
 	while (split[i])
 	{
 		*list = add_to_slist(*list,	split[i]);
@@ -65,8 +65,8 @@ void print(x_node *list)
 	temp = list;
 	while (temp)
 	{
-		// printf("%s ---------- %d\n", temp->str, temp->type);
-		printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
+		printf("%s ---------- %d\n", temp->str, temp->type);
+		// printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
 		// printf("%s\n", temp->str);
 		temp = temp->next; 
 	}

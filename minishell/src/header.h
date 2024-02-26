@@ -27,6 +27,14 @@ typedef enum    e_token_type
 	OUTFILE, // 13
 }             t_token_type;
 
+// env
+typedef struct b_node
+{
+	char *str;
+	struct b_node *next;
+} e_node;
+
+
 typedef struct s_node
 {
 	t_token_type type;
@@ -35,13 +43,6 @@ typedef struct s_node
 	int fd_out;
 	struct s_node *next;
 } x_node;
-
-// env
-typedef struct b_node
-{
-	char *str;
-	struct b_node *next;
-} e_node;
 
 typedef struct node
 {
@@ -75,6 +76,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 int	ft_isalpha(int c);
 
 t_node	*create_node(char *data);
+char    **token_split(char const *s, char c);
 void	add_to_list(t_dblst *list, char *data);
 void print_list(t_dblst *list);
 void add_list(char **str, t_dblst *list);
