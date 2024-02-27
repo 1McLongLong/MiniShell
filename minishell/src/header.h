@@ -34,15 +34,21 @@ typedef struct b_node
 	struct b_node *next;
 } e_node;
 
-
 typedef struct s_node
 {
 	t_token_type type;
 	char *str;
 	int fd_in;
 	int fd_out;
+	struct s_node *prev;
 	struct s_node *next;
 } x_node;
+
+typedef struct q_node
+{
+	x_node	*head;
+	x_node	*tail;
+} p_dblst;
 
 typedef struct node
 {
@@ -82,15 +88,15 @@ void print_list(t_dblst *list);
 void add_list(char **str, t_dblst *list);
 void	free_list(t_dblst *list);
 void free_envlist(e_node *list);
-void print(x_node *list);
+void print(p_dblst *list);
 void print_env(e_node *list);
-void remove_quotes(x_node *p_list);
-void redirections(x_node *list);
+void remove_quotes(p_dblst *p_list);
+void redirections(p_dblst *list);
 void expand_redir(char **str);
 
-void expand(x_node *p_list);
+void expand(p_dblst *p_list);
 void get_env(e_node **env_list, char **env);
-x_node *tokenize_list(char *str);
+p_dblst tokenize_list(char *str);
 void lexer(char *line, t_dblst *list);
 void epur_str(char *str); 
 int str_len(const char *str);

@@ -1,6 +1,5 @@
 #include "header.h"
 
-
 static int count_words(const char *str, char c)
 {
   int count = 0, i, len;

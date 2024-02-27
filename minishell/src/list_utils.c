@@ -55,14 +55,14 @@ void print_list(t_dblst *list)
 	t_node *temp;
 
 	temp = list->head;
-	int i;
+	// int i;
 	while (temp)
 	{
-		//printf("%s  -------- %d\n", temp->cmd, temp->type);
-		i = 0;
-		while (temp->arg[i])
-			printf("%s ", temp->arg[i++]);
-		//printf(" | %s", temp->cmd);
+		// printf("%s  -------- %d\n", temp->cmd, temp->type);
+		// i = 0;
+		// while (temp->arg[i])
+		// 	printf("%s ", temp->arg[i++]);
+		printf("in = %d | out = %d", temp->fd_in, temp->fd_out);
 		printf("\n");
 		temp = temp->next; 
 	}

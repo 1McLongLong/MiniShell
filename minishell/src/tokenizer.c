@@ -10,10 +10,10 @@ x_node *create_snode(char *data)
 	new_node->type = 0;
 	new_node->str = strdup(data);
 	new_node->next = NULL;
+	new_node->prev = NULL;
 	return new_node;
 }
-
-x_node *add_to_slist(x_node *list, char *data)
+/*x_node *add_to_slist(x_node *list, char *data)
 {
 	x_node *new_node = create_snode(data);
 	if (new_node == NULL)
@@ -28,16 +28,33 @@ x_node *add_to_slist(x_node *list, char *data)
 		current->next = new_node;
 	}
 	return list;
+}*/
+
+void add_to_slist(p_dblst *list, char *data)
+{
+	x_node *new_node;
+
+	new_node = create_snode(data);
+	if (list->head == NULL)
+	{
+		list->head = new_node;
+		list->tail = new_node;
+	}
+	else
+	{
+		new_node->prev = list->tail;
+		list->tail->next = new_node;
+		list->tail = new_node;
+	}
 }
 
-void add_slist(char *str, x_node **list)
+void add_slist(char *str, p_dblst *list)
 {
-	(void)list;
 	int i = 0;
 	char **split = token_split(str, ' ');
 	while (split[i])
 	{
-		*list = add_to_slist(*list,	split[i]);
+		add_to_slist(list, split[i]);
 		i++;
 	}
 }
@@ -58,24 +75,38 @@ void remove_spaces(char *str)
 	}
 }
 
-void print(x_node *list)
+// void print(x_node *list)
+// {
+// 	x_node *temp;
+//
+// 	temp = list;
+// 	while (temp)
+// 	{
+// 		// printf("%s ---------- %d\n", temp->str, temp->type);
+// 		printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
+// 		// printf("%s\n", temp->str);
+// 		temp = temp->next; 
+// 	}
+// }
+
+void print(p_dblst *list)
 {
 	x_node *temp;
 
-	temp = list;
+	temp = list->head;
+	// int i;
 	while (temp)
 	{
-		printf("%s ---------- %d\n", temp->str, temp->type);
-		// printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
+ 		// printf("%s ---------- %d\n", temp->str, temp->type);
+ 		printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
 		// printf("%s\n", temp->str);
 		temp = temp->next; 
 	}
 }
 
-
-void tokenize_my_list(x_node *list)
+void tokenize_my_list(p_dblst *list)
 {
-	x_node *head = list;
+	x_node *head = list->head;
 	head->type = COMMAND;
 	head = head->next;
 	while (head)
@@ -126,13 +157,15 @@ void tokenize_my_list(x_node *list)
 }
 
 
-x_node *tokenize_list(char *str)
+p_dblst tokenize_list(char *str)
 {
-	x_node *list = NULL;
+	p_dblst list;
+	list.head = NULL;
+	list.tail = NULL;
 	remove_spaces(str);
 	//printf("%s\n", str);
 	add_slist(str, &list);
-	tokenize_my_list(list);
-	//print(list);
+	tokenize_my_list(&list);
+	// print(&list);
 	return (list);
 }

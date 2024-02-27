@@ -1,8 +1,8 @@
 #include "header.h"
 
-void delete_node(x_node **list)
+void delete_node(p_dblst **list)
 {
-	x_node *current = *list;
+	x_node *current = (*list)->head;
 	x_node *prev = NULL;
 	x_node *next;
 
@@ -15,7 +15,7 @@ void delete_node(x_node **list)
 			if (prev)
 				prev->next = next;
 			else
-				*list = next;  // Update list if the first node is being deleted
+				(*list)->head = next;  // Update list if the first node is being deleted
 			current = next;
 		} 
 		else
@@ -26,9 +26,9 @@ void delete_node(x_node **list)
 	}
 }
 
-void remove_quotes(x_node *p_list)
+void remove_quotes(p_dblst *p_list)
 {
-	x_node *head = p_list;
+	x_node *head = p_list->head;
 	delete_node(&p_list);
 	while (head)
 	{

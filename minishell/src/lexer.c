@@ -1,208 +1,205 @@
-
 #include "header.h"
 
 
 int fix_input(char *line)
 {
-  epur_str(line);
-  if (line[0] == '#')
-    return (0);
-  int i = 0;
-  int inside_quotes = 0;
-  while (line[i])
-  {
-    if (line[i] == '"')
-      inside_quotes = !inside_quotes;
-    if (!inside_quotes && line[i] == '|' && line[i + 1] == '|')
-    {
-      printf("Syntax error!\n");
-      return (0);
-    }
-    else if (line[i] == '>' && line[i + 1] == ' ' && line[i + 2] == '>')
-    {
-      printf("Syntax error!\n");
-      return (0);
-    }
-    else if (line[i] == '<' && line[i + 1] == ' ' && line[i + 2] == '<')
-    {
-      printf("Syntax error!\n");
-      return (0);
-    }
-    i++;
-  }
-  return (1);
+	epur_str(line);
+	if (line[0] == '#')
+		return (0);
+	int i = 0;
+	int inside_quotes = 0;
+	while (line[i])
+	{
+		if (line[i] == '"')
+			inside_quotes = !inside_quotes;
+		if (!inside_quotes && line[i] == '|' && line[i + 1] == '|')
+		{
+			printf("Syntax error!\n");
+			return (0);
+		}
+		else if (line[i] == '>' && line[i + 1] == ' ' && line[i + 2] == '>')
+		{
+			printf("Syntax error!\n");
+			return (0);
+		}
+		else if (line[i] == '<' && line[i + 1] == ' ' && line[i + 2] == '<')
+		{
+			printf("Syntax error!\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
 }
 
 char *fix_line(char *str)
 { 
-  int len = str_len(str);
-  char *result = malloc(sizeof(char) * (len + 1));
-  if (!result)
-    return (NULL);
-  int j = 0;
-  int inquotes = 0;
+	int len = str_len(str);
+	char *result = malloc(sizeof(char) * (len + 1));
+	if (!result)
+		return (NULL);
+	int j = 0;
+	int inquotes = 0;
 
-  int i = 0;
-  while (i < len && j < len) 
-  {
-    if (str[i] == '"')
-    {
-      inquotes = !inquotes;
-      result[j++] = str[i];
-    }
-    else if (!inquotes && (str[i] == '|' || (str[i] == '>') || (str[i] == '<'))) 
-    {
-      if (i > 0 && str[i - 1] != ' ')
-      {
-        result[j++] = ' '; 
-      }
-      result[j++] = str[i];
-      if (i < len - 1 && str[i + 1] != ' ') 
-      {
-        result[j++] = ' '; 
-      }
-    } 
-    else 
-    {
-      result[j++] = str[i];	
-    }
-    i++;
-  }
-  result[j] = '\0';
-  fix_it_again(result);
-  return (result); 
+	int i = 0;
+	while (i < len && j < len) 
+	{
+		if (str[i] == '"')
+		{
+			inquotes = !inquotes;
+			result[j++] = str[i];
+		}
+		else if (!inquotes && (str[i] == '|' || (str[i] == '>') || (str[i] == '<'))) 
+		{
+			if (i > 0 && str[i - 1] != ' ')
+			{
+				result[j++] = ' '; 
+			}
+			result[j++] = str[i];
+			if (i < len - 1 && str[i + 1] != ' ') 
+			{
+				result[j++] = ' '; 
+			}
+		} 
+		else 
+		{
+			result[j++] = str[i];	
+		}
+		i++;
+	}
+	result[j] = '\0';
+	fix_it_again(result);
+	return (result); 
 }
 
 int check_quotes(char *input) 
 {
-  int singleQuotes = 0;
-  int doubleQuotes = 0;
-  int escaped = 0;
+	int singleQuotes = 0;
+	int doubleQuotes = 0;
+	int escaped = 0;
 
-  for (int i = 0; input[i] != '\0'; i++) 
-  {
-    if (input[i] == '\\' && !escaped)
-    {
-      // If the backslash is not escaped, set the escaped flag
-      escaped = 1;
-    }
-    else if (input[i] == '\'' && !escaped && doubleQuotes % 2 == 0) 
-    {
-      // Single quote outside double quotes
-      singleQuotes++;
-    }
-    else if (input[i] == '\"' && !escaped && singleQuotes % 2 == 0) 
-    {
-      // Double quote outside single quotes
-      doubleQuotes++;
-    }
-    // Reset escaped flag if the current character is not a backslashi 
-    if (input[i] == '\\' && escaped)
-      escaped = 0;
-  }
-  // Check if the total count of quotes is even
-  if (singleQuotes % 2 != 0 || doubleQuotes % 2 != 0) 
-  {
-    printf("Syntax error!\n");
-    return 0;
-  }
-  return 1;
+	for (int i = 0; input[i] != '\0'; i++) 
+	{
+		if (input[i] == '\\' && !escaped)
+		{
+			// If the backslash is not escaped, set the escaped flag
+			escaped = 1;
+		}
+		else if (input[i] == '\'' && !escaped && doubleQuotes % 2 == 0) 
+		{
+			// Single quote outside double quotes
+			singleQuotes++;
+		}
+		else if (input[i] == '\"' && !escaped && singleQuotes % 2 == 0) 
+		{
+			// Double quote outside single quotes
+			doubleQuotes++;
+		}
+		// Reset escaped flag if the current character is not a backslashi 
+		if (input[i] == '\\' && escaped)
+			escaped = 0;
+	}
+	// Check if the total count of quotes is even
+	if (singleQuotes % 2 != 0 || doubleQuotes % 2 != 0) 
+	{
+		printf("Syntax error!\n");
+		return 0;
+	}
+	return 1;
 }
 
 
 void remove_spaces_inq(char **str)
 {
-  int i = 0;
-  int inside_quotes = 0;
-  int j;
-  while (str[i])
-  {
-    j = 0;
-    while (str[i][j])
-    {
-      if (str[i][j] == '"')
-        inside_quotes = !inside_quotes;
-      if (inside_quotes && (str[i][j] == ' '))
-      {
-        str[i][j] *= -1;
-      }
-      j++;
-    }
-    i++;
-  }
+	int i = 0;
+	int inside_quotes = 0;
+	int j;
+	while (str[i])
+	{
+		j = 0;
+		while (str[i][j])
+		{
+			if (str[i][j] == '"')
+				inside_quotes = !inside_quotes;
+			if (inside_quotes && (str[i][j] == ' '))
+			{
+				str[i][j] *= -1;
+			}
+			j++;
+		}
+		i++;
+	}
 }
 
 void add_spaces_back(t_dblst *list) 
 {
-  t_node *temp = list->head;
-  int inside_quotes = 0;
-  int i;
-  int j;
-  while (temp != NULL) 
-  {
-    i = 0;
-    while (temp->arg[i])
-    {
-      j = 0;
-      while (temp->arg[i][j])
-      {
-        if (temp->arg[i][j] == '"')
-          inside_quotes = !inside_quotes;
-        if (inside_quotes && temp->arg[i][j] == -32) 
-        {
-          temp->arg[i][j] *= -1;
-        }
-        j++;
-      }
-      i++;
-    }
-    temp = temp->next;
-  }
+	t_node *temp;
+	int i;
+	int j;
+	
+	temp = list->head;
+	while (temp != NULL) 
+	{
+		i = 0;
+		while (temp->arg[i])
+		{
+			j = 0;
+			while (temp->arg[i][j])
+			{
+				if (temp->arg[i][j] == -32) 
+				{
+					temp->arg[i][j] *= -1;
+				}
+				j++;
+			}
+			i++;
+		}
+		temp = temp->next;
+	}
 }
 
-int check_syntax(x_node *list)
+void check_syntax(p_dblst *list)
 {
-  x_node *head = list;
-  while(head)
-  {
-    if ((head->type == REDIN && head->next && head->next->type == PIPE) ||
-      (head->type == REDOUT && head->next && head->next->type == PIPE) ||
-      (head->type == APPEND && head->next && head->next->type == PIPE) ||
-      (head->type == HERDOC && head->next && head->next->type == PIPE) ||
-      (head->type == PIPE && head->next && head->next->type == REDIN) ||
-      (head->type == PIPE && head->next && head->next->type == REDOUT) ||
-      (head->type == PIPE && head->next && head->next->type == APPEND) ||
-      (head->type == PIPE && head->next && head->next->type == HERDOC) ||
-      (head->type == PIPE && head->next && head->next->type == PIPE) ||
-      (head->type == PIPE && head->next == NULL) ||
-      (head->type == REDIN && head->next == NULL) ||
-      (head->type == REDOUT && head->next == NULL) ||
-      (head->type == APPEND && head->next == NULL) ||
-      (head->type == HERDOC && head->next == NULL))
-    {
-      printf("bash: syntax error near unexpected token\n");
-      return (1);
-    }
-    head = head->next;
-  }
-  return (0);
+	x_node *head = list->head;
+	while(head)
+	{
+		if ((head->type == REDIN && head->next && head->next->type == PIPE) ||
+			(head->type == REDOUT && head->next && head->next->type == PIPE) ||
+			(head->type == APPEND && head->next && head->next->type == PIPE) ||
+			(head->type == HERDOC && head->next && head->next->type == PIPE) ||
+			(head->type == PIPE && head->next && head->next->type == REDIN) ||
+			(head->type == PIPE && head->next && head->next->type == REDOUT) ||
+			(head->type == PIPE && head->next && head->next->type == APPEND) ||
+			(head->type == PIPE && head->next && head->next->type == HERDOC) ||
+			(head->type == PIPE && head->next && head->next->type == PIPE) ||
+			(strcmp(head->str, "|") == 0 && head->next == NULL) ||
+			(strcmp(head->str, ">>") == 0 && head->next == NULL) ||
+			(strcmp(head->str, "<<") == 0 && head->next == NULL) ||
+			(strcmp(head->str, ">") == 0 && head->next == NULL) ||
+			(strcmp(head->str, "<") == 0 && head->next == NULL))
+		{
+			printf("bash: syntax error near unexpected token\n");
+			break ;
+		}
+		head = head->next;
+	}
 }
 
-char *exec_line(x_node *head) 
+char *exec_line(p_dblst *list) 
 {
-  x_node *current;
+  x_node *head;
   char *result;
   int length;
   int i;
 
-  if (head == NULL) 
+  if (list->head == NULL) 
     return NULL;
-  current = head;
+  head = list->head;
   length = 0;
-  while (current != NULL)
+  while (head != NULL)
   {
-    length += strlen(current->str) + 1;
-    current = current->next;
+    length += strlen(head->str) + 1;
+    head = head->next;
   }
 
   result = (char *)malloc(length + 1);
@@ -210,57 +207,79 @@ char *exec_line(x_node *head)
     perror("Memory allocation error");
     exit(EXIT_FAILURE);
   }
-  current = head;
+  head = list->head;
   i = 0;
-  while (current != NULL) 
+  while (head != NULL) 
   {
-    strcpy(result + i, current->str);
-    i += strlen(current->str);
+    strcpy(result + i, head->str);
+    i += strlen(head->str);
     result[i++] = ' ';
-    current = current->next;
+    head = head->next;
   }
   result[length - 1] = '\0';
   return (result);
 }
 
+void add_redi_to_list(t_dblst *list, p_dblst *p_list)
+{
+	t_node *e_temp;
+	x_node *p_temp;
+
+	e_temp = list->head;
+	p_temp = p_list->head;
+	while (p_temp)
+	{
+		if (strcmp(p_temp->str, ">") == 0 || strcmp(p_temp->str, ">>") == 0)
+		{
+			e_temp->fd_out = p_temp->next->fd_out;
+		}
+		if (strcmp(p_temp->str, "<") == 0 || strcmp(p_temp->str, "<<") == 0)
+		{
+			e_temp->fd_in = p_temp->next->fd_in;
+		}
+		if (strcmp(p_temp->str, "|") == 0)
+			e_temp = e_temp->next;
+		p_temp = p_temp->next;
+	}
+}
 
 void lexer(char *line, t_dblst *list)
 {
-  (void)list;
-  x_node *p_list;
-  if (!(fix_input(line))) // || inside quotes is not working
-    return ;
-  char *fixed_line = fix_line(line);
-  if (!(check_quotes(fixed_line)))
-    return ;
-  //printf("%s\n", fixed_line);
-  char *p_line = fix_quotes(fixed_line);
-  // printf("%s\n", p_line);
-  p_list = tokenize_list(p_line);
-  // print(p_list);
-  if (check_syntax(p_list))
-    return ;
-  // printf("------------\n");
-  expand(p_list);
-  remove_quotes(p_list);
-  redirections(p_list);
-  // print(p_list);
-  char *e_line = exec_line(p_list);
-  // printf("%s\n", e_line);
-  char **str = ft_split(e_line, '|');
-  int i = 0;
-  while (str[i])
-    printf("%s\n",str[i++]);
-  ////remove_spaces_inq(str);
-  //i = 0;
-  //while (str[i])
-  //printf("%s\n",str[i++]);
-  ////add_list(str, list);
-  ////add_spaces_back(list);
-  ////print_list(list);
-  //ft_free(str);
-  free(fixed_line);
-  return ;
+	(void)list;
+	p_dblst p_list;
+	if (!(fix_input(line))) // || inside quotes is not working
+		return ;
+	char *fixed_line = fix_line(line);
+	if (!(check_quotes(fixed_line)))
+		return ;
+	//printf("%s\n", fixed_line);
+	char *p_line = fix_quotes(fixed_line);
+	// printf("%s\n", p_line);
+	p_list = tokenize_list(p_line);
+	// print(&p_list);
+	check_syntax(&p_list);
+	expand(&p_list);
+	remove_quotes(&p_list);
+	redirections(&p_list);
+	print(&p_list);
+  printf("-----------------\n");
+	char *e_line = exec_line(&p_list);
+	//printf("%s\n", e_line);
+	char **str = ft_split(e_line, '|');
+	// int i = 0;
+	// while (str[i])
+		// printf("%s\n",str[i++]);
+	////remove_spaces_inq(str);
+	//i = 0;
+	//while (str[i])
+	//printf("%s\n",str[i++]);
+	add_list(str, list);
+	add_spaces_back(list);
+	add_redi_to_list(list, &p_list);
+	print_list(list);
+	//ft_free(str);
+	free(fixed_line);
+	return ;
 }
 
 

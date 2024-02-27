@@ -99,9 +99,9 @@ void quotes(x_node *p_list, char *env)
 }
 
 
-void expand(x_node *p_list)
+void expand(p_dblst *p_list)
 {
-	x_node *temp = p_list;
+	x_node *temp = p_list->head;
 	while (temp)
 	{
 		char *str = find_dollar(temp->str);

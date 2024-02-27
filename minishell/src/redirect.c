@@ -40,7 +40,7 @@ void herdoc(x_node *list)
     write(fd, "\n", 1);
 		free(buffer);
   }
-  temp->next->fd_out = fd;
+  temp->next->fd_in = fd;
 	 // close(fd);
   fd = open(temp_filename, O_RDONLY);
   if (fd == -1) {
@@ -81,38 +81,44 @@ while (true)
 // }
 
 
-void check_opened_fd(x_node *list, x_node *last_fnode)
+void check_opened_fd(p_dblst *list, x_node *last_fnode, int flag)
 {
+	(void)flag;
 	x_node *temp;
 
-	temp = list;
+	temp = list->head;
 	while (temp != last_fnode)
+		temp = temp->next;
+
+	while (temp)
 	{
-		if (temp->fd_out != 1)
+		if (flag == 1 && temp->fd_out != 1)
 		{
 			close(temp->fd_out);
 			temp->fd_out = -1;
 		}
-		else if (temp->fd_in != 0)
+		else if (flag == 0 && temp->fd_in != 0)
 		{
 			close(temp->fd_in);
 			temp->fd_in = -1;
 		}
-		temp = temp->next;
+		if (temp->prev && strcmp(temp->prev->str, "|") == 0)
+			break ;
+		temp = temp->prev;
 	}
 }
 
 
-void redirections(x_node *list)
+void redirections(p_dblst *list)
 {
 	x_node *temp;
-	temp = list;
+	temp = list->head;
 
 	while (temp)
 	{
 		if (strcmp(temp->str, ">") == 0)
 		{
-			check_opened_fd(list, temp);
+			check_opened_fd(list, temp, 1);
 			int fd = open(temp->next->str, O_CREAT | O_RDWR);
 			if (fd == -1)
 				perror("ERROR");
@@ -120,15 +126,16 @@ void redirections(x_node *list)
 		}
 		else if (strcmp(temp->str, "<") == 0)
 		{
-			check_opened_fd(list, temp);
+			check_opened_fd(list, temp, 0);
 			int fd = open(temp->next->str, O_CREAT | O_RDONLY);
+			// printf("%d\n", fd);
 			if (fd == -1)
 				perror("ERROR");
-			temp->next->fd_out = fd;
+			temp->next->fd_in = fd;
 		}
 		else if (strcmp(temp->str, ">>") == 0)
 		{
-			check_opened_fd(list, temp);
+			check_opened_fd(list, temp, 1);
 			int fd = open(temp->next->str, O_CREAT | O_RDWR | O_TRUNC);
 			if (fd == -1)
 				perror("ERROR");
@@ -136,7 +143,7 @@ void redirections(x_node *list)
 		}
 		else if (strcmp(temp->str, "<<") == 0)
 		{
-			check_opened_fd(list, temp);
+			check_opened_fd(list, temp, 0);
 			herdoc(temp);
 		}
 		temp = temp->next;
