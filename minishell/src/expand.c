@@ -11,7 +11,7 @@ char *find_dollar(char *str)
 		{
 			j = i;
 			i++; 
-			while (str[i] && ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z') || str[i] == '_'))
+			while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 			{
 				i++;
 			}
@@ -41,7 +41,7 @@ void quotes(x_node *p_list, char *env)
       while (p_list->str[j])
         j++;
       int end = j;
-      while (!(ft_isalpha(p_list->str[j])) && p_list->str[j] != '_')
+      while (j > 0 && !(ft_isalnum(p_list->str[j])) && p_list->str[j] != '_')
         j--;
       j++;
       char *temp2 = ft_substr(p_list->str, j, end - j);
@@ -75,18 +75,18 @@ void quotes(x_node *p_list, char *env)
     }
     else
     {
-			char *expand = getenv(env);
-      char *temp = NULL;
-      if (p_list->str[0] != '$')
-      {
+		char *expand = getenv(env);
+		char *temp = NULL;
+		if (p_list->str[0] != '$')
+		{
 			  while (p_list->str[i] != '$')
 			  	i++;
 			  temp = ft_substr(p_list->str, 0, i);
-      }
+    	}
       while (p_list->str[j])
         j++;
       int end = j;
-      while (!(ft_isalpha(p_list->str[j])) && p_list->str[j] != '_')
+      while (j >= 0 && !(ft_isalnum(p_list->str[j])) && p_list->str[j] != '_')
         j--;
       j++;
       char *temp2 = ft_substr(p_list->str, j, end - j);
@@ -114,5 +114,5 @@ void expand(p_dblst *p_list)
     else
 		  temp = temp->next;
 	}
-	 // print(p_list);
+	// print(p_list);
 }

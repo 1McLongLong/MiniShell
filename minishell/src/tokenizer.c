@@ -48,6 +48,23 @@ void add_to_slist(p_dblst *list, char *data)
 	}
 }
 
+void	free_slist(p_dblst *list)
+{
+	x_node	*current;
+	x_node	*next;
+
+	current = list->head;
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current->str);
+		free(current);
+		current = next;
+	}
+	list->head = NULL;
+	list->tail = NULL;
+}
+
 void add_slist(char *str, p_dblst *list)
 {
 	int i = 0;
@@ -57,6 +74,7 @@ void add_slist(char *str, p_dblst *list)
 		add_to_slist(list, split[i]);
 		i++;
 	}
+	ft_free(split);
 }
 
 void remove_spaces(char *str)
@@ -97,8 +115,8 @@ void print(p_dblst *list)
 	// int i;
 	while (temp)
 	{
- 		// printf("%s ---------- %d\n", temp->str, temp->type);
- 		printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
+ 		printf("%s ---------- %d\n", temp->str, temp->type);
+ 		// printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
 		// printf("%s\n", temp->str);
 		temp = temp->next; 
 	}

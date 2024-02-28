@@ -38,11 +38,13 @@ void	free_list(t_dblst *list)
 {
 	t_node	*current;
 	t_node	*next;
-
+	
 	current = list->head;
 	while (current != NULL)
 	{
 		next = current->next;
+		ft_free(current->arg);
+		free(current->cmd);
 		free(current);
 		current = next;
 	}
@@ -55,14 +57,14 @@ void print_list(t_dblst *list)
 	t_node *temp;
 
 	temp = list->head;
-	// int i;
+	int i;
 	while (temp)
 	{
 		// printf("%s  -------- %d\n", temp->cmd, temp->type);
-		// i = 0;
-		// while (temp->arg[i])
-		// 	printf("%s ", temp->arg[i++]);
-		printf("in = %d | out = %d", temp->fd_in, temp->fd_out);
+		i = 0;
+		while (temp->arg[i])
+			printf("%s ", temp->arg[i++]);
+		// printf("\nin = %d | out = %d", temp->fd_in, temp->fd_out);
 		printf("\n");
 		temp = temp->next; 
 	}
@@ -70,6 +72,8 @@ void print_list(t_dblst *list)
 
 void add_list(char **str, t_dblst *list)
 {
+	if (str == NULL)
+		return ;
 	int i = 0;
 	while (str[i])
 	{

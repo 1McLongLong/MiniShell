@@ -16,6 +16,13 @@ void delete_node(p_dblst **list)
 				prev->next = next;
 			else
 				(*list)->head = next;  // Update list if the first node is being deleted
+			if (next)
+				next->prev = prev;
+			if (next == NULL)
+			{
+				(*list)->head = NULL;
+				return;
+			}
 			current = next;
 		} 
 		else
@@ -28,11 +35,13 @@ void delete_node(p_dblst **list)
 
 void remove_quotes(p_dblst *p_list)
 {
-	x_node *head = p_list->head;
+	if (p_list == NULL || p_list->head == NULL)
+		return ;
 	delete_node(&p_list);
+	x_node *head = p_list->head;
 	while (head)
 	{
-		if (head->str[0] == '"' || head->str[0] == '\'')
+		if (head->str && (head->str[0] == '"' || head->str[0] == '\''))
 		{
 			char *temp = head->str;
 			head->str = ft_substr(temp, 1, ft_strlen(temp) - 2);

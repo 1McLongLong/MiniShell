@@ -116,7 +116,7 @@ void redirections(p_dblst *list)
 
 	while (temp)
 	{
-		if (strcmp(temp->str, ">") == 0)
+		if (strcmp(temp->str, ">") == 0 && temp->next)
 		{
 			check_opened_fd(list, temp, 1);
 			int fd = open(temp->next->str, O_CREAT | O_RDWR);
@@ -124,7 +124,7 @@ void redirections(p_dblst *list)
 				perror("ERROR");
 			temp->next->fd_out = fd;
 		}
-		else if (strcmp(temp->str, "<") == 0)
+		else if (strcmp(temp->str, "<") == 0 && temp->next)
 		{
 			check_opened_fd(list, temp, 0);
 			int fd = open(temp->next->str, O_CREAT | O_RDONLY);
@@ -133,7 +133,7 @@ void redirections(p_dblst *list)
 				perror("ERROR");
 			temp->next->fd_in = fd;
 		}
-		else if (strcmp(temp->str, ">>") == 0)
+		else if (strcmp(temp->str, ">>") == 0 && temp->next)
 		{
 			check_opened_fd(list, temp, 1);
 			int fd = open(temp->next->str, O_CREAT | O_RDWR | O_TRUNC);
@@ -141,7 +141,7 @@ void redirections(p_dblst *list)
 				perror("ERROR");
 			temp->next->fd_out = fd;
 		}
-		else if (strcmp(temp->str, "<<") == 0)
+		else if (strcmp(temp->str, "<<") == 0 && temp->next)
 		{
 			check_opened_fd(list, temp, 0);
 			herdoc(temp);

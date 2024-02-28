@@ -69,6 +69,7 @@ typedef struct d_node
 } t_dblst;
 
 
+int	ft_isalnum(int c);
 int		ft_printf(const char *format, ...);
 char	*get_next_line(int fd);
 int		ft_atoi(const char *str);
@@ -87,6 +88,7 @@ void	add_to_list(t_dblst *list, char *data);
 void print_list(t_dblst *list);
 void add_list(char **str, t_dblst *list);
 void	free_list(t_dblst *list);
+void	free_slist(p_dblst *list);
 void free_envlist(e_node *list);
 void print(p_dblst *list);
 void print_env(e_node *list);
