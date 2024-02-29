@@ -53,10 +53,9 @@ typedef struct q_node
 typedef struct node
 {
 	char *cmd;
-	char **arg;
+	char **arg; // echo hello world
 	int fd_in;
 	int fd_out;
-  t_token_type  type;
 	struct node	*prev;
 	struct node	*next;
 }				t_node;
@@ -107,6 +106,8 @@ void fix_it_again(char *str);
 char* fix_quotes(char *input);
 
 
+char *exec_line(p_dblst *list);
+void remove_line_quotes(char *str);
 
 
 

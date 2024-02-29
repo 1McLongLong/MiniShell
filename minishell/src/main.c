@@ -2,7 +2,7 @@
 
 void f()
 {
-	system("leaks mini_shell");
+	system("leaks minishell");
 }
 
 int main(int argc, char **argv, char **env)

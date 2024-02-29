@@ -63,7 +63,7 @@ void print_list(t_dblst *list)
 		// printf("%s  -------- %d\n", temp->cmd, temp->type);
 		i = 0;
 		while (temp->arg[i])
-			printf("%s ", temp->arg[i++]);
+			printf("%s\n", temp->arg[i++]);
 		// printf("\nin = %d | out = %d", temp->fd_in, temp->fd_out);
 		printf("\n");
 		temp = temp->next; 

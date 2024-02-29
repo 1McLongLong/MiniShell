@@ -50,3 +50,124 @@ void remove_quotes(p_dblst *p_list)
 		head = head->next;
 	}
 }
+/*
+void remove_double(char *str)
+{
+    int i = 0;
+    int j = 0;
+    int inside_quotes = 0;
+
+    while (str[i])
+    {
+        if (str[i] == '\"')
+        {
+            inside_quotes = !inside_quotes;
+            i++;
+        }
+        else if (inside_quotes)
+        {
+            if (str[i] != '\"')
+            {
+                str[j] = str[i];
+                j++;
+            }
+            i++;
+        }
+        else
+        {
+            str[j] = str[i];
+            i++;
+            j++;
+        }
+    }
+    str[j] = '\0'; // Terminate the modified string
+}
+
+void remove_single(char *str)
+{
+    int i = 0;
+    int j = 0;
+    int inside_quotes = 0;
+
+    while (str[i])
+    {
+        if (str[i] == '\'')
+        {
+            inside_quotes = !inside_quotes;
+            i++;
+        }
+        else if (inside_quotes)
+        {
+            if (str[i] != '\'')
+            {
+                str[j] = str[i];
+                j++;
+            }
+            i++;
+        }
+        else
+        {
+            str[j] = str[i];
+            i++;
+            j++;
+        }
+    }
+    str[j] = '\0'; // Terminate the modified string
+}
+
+
+void remove_line_quotes(char *str)
+{
+	printf("str: %s\n", str);
+	remove_double(str);
+	printf("double: str: %s\n", str);
+	remove_single(str);
+	printf("single: str: %s\n", str);
+}
+*/
+
+
+
+void remove_line_quotes(char *str)
+{
+    int i = 0;
+    int j = 0;
+    int inside_quotes = 0;
+    int inside_single_quotes = 0;
+
+    while (str[i])
+    {
+        if (str[i] == '\"' && !inside_single_quotes)
+        {
+            inside_quotes = !inside_quotes;
+            i++;
+        }
+        else if (str[i] == '\'' && !inside_quotes)
+        {
+            inside_single_quotes = !inside_single_quotes;
+            i++;
+        }
+        else if (inside_quotes || inside_single_quotes)
+        {
+            str[j] = str[i];
+            i++;
+            j++;
+        }
+        else
+        {
+            str[j] = str[i];
+            i++;
+            j++;
+        }
+    }
+    str[j] = '\0'; // Terminate the modified string
+}
+
+
+
+
+
+
+
+
+
