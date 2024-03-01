@@ -222,38 +222,6 @@ void add_redi_to_list(t_dblst *list, p_dblst *p_list)
 }
 
 
-void fix_e_line(const char *f_line, char *e_line) 
-{
-	const char *f_quote = f_line;
-	char *e_quote = e_line;
-
-	// Iterate over each pair of quotes in f_line and e_line
-	while ((f_quote = strchr(f_quote, '"')) && (e_quote = strchr(e_quote, '"')))
-	{
-		// Check if there is no space before the quote in f_line
-		if (*(f_quote - 1) != ' ') {
-			// Check if there is a space before the quote in e_line
-			if (*(e_quote - 1) == ' ') {
-				// Remove the space before the quote in e_line
-				memmove(e_quote - 1, e_quote, strlen(e_quote) + 1);
-			}
-		}
-
-		// Check if there is no space after the quote in f_line
-		if (*(f_quote + 1) != ' ' && *(f_quote + 1) != '\0') {
-			// Check if there is a space after the quote in e_line
-			if (*(e_quote + 1) == ' ') {
-				// Remove the space after the quote in e_line
-				memmove(e_quote + 1, e_quote + 2, strlen(e_quote + 1) + 1);
-			}
-		}
-		// Move to the next quote in f_line and e_line
-		f_quote++;
-		e_quote++;
-	}
-}
-
-
 void lexer(char *line, t_dblst *list)
 {
 	p_dblst p_list;
@@ -262,7 +230,7 @@ void lexer(char *line, t_dblst *list)
 	char *fixed_line = fix_line(line);
 	if (!(check_quotes(fixed_line)))
 		return ;
-	// printf("%s\n", fixed_line);
+	 // printf("fixed_line: %s\n", fixed_line);
 	char *p_line = fix_quotes(fixed_line);
 	p_list = tokenize_list(p_line);
 	// print(&p_list);
@@ -271,13 +239,13 @@ void lexer(char *line, t_dblst *list)
 	expand(&p_list);
 	// print(&p_list);
 	char *e_line = exec_line(&p_list);
-	// fix_e_line(e_line, fixed_line);
+	// printf("e_line : %s\n", e_line);
 	remove_quotes(&p_list);
 	redirections(&p_list);
 	// printf("-----------------\n");
 	fix_e_line(fixed_line, e_line);
 	remove_line_quotes(e_line);
-	printf("fix e_line : %s\n", e_line);
+	// printf("fix e_line : %s\n", e_line);
 	char **str = ft_split(e_line, '|');
 	// int i = 0;
 	// while (str[i])
@@ -289,14 +257,14 @@ void lexer(char *line, t_dblst *list)
 	add_list(str, list);
 	add_spaces_back(list);
 	add_redi_to_list(list, &p_list);
-	//print_list(list);
+	print_list(list);
 
 	//        FREE
-	// free_slist(&p_list);
-	// ft_free(str);
-	// free(p_line);
-	// free(fixed_line);
-	// free(e_line);
+	free_slist(&p_list);
+	ft_free(str);
+	free(p_line);
+	free(fixed_line);
+	free(e_line);
 	return ;
 }
 

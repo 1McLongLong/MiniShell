@@ -27,12 +27,12 @@ typedef enum    e_token_type
 	OUTFILE, // 13
 }             t_token_type;
 
-// env
-typedef struct b_node
+typedef struct indexes
 {
-	char *str;
-	struct b_node *next;
-} e_node;
+	int i;
+	int j;
+	int len;
+} t_index;
 
 typedef struct s_node
 {
@@ -88,15 +88,12 @@ void print_list(t_dblst *list);
 void add_list(char **str, t_dblst *list);
 void	free_list(t_dblst *list);
 void	free_slist(p_dblst *list);
-void free_envlist(e_node *list);
 void print(p_dblst *list);
-void print_env(e_node *list);
 void remove_quotes(p_dblst *p_list);
 void redirections(p_dblst *list);
 void expand_redir(char **str);
 
 void expand(p_dblst *p_list);
-void get_env(e_node **env_list, char **env);
 p_dblst tokenize_list(char *str);
 void lexer(char *line, t_dblst *list);
 void epur_str(char *str); 
@@ -107,6 +104,7 @@ char* fix_quotes(char *input);
 
 
 char *exec_line(p_dblst *list);
+void fix_e_line(char *f_line, char *e_line);
 void remove_line_quotes(char *str);
 
 

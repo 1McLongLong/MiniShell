@@ -16,10 +16,13 @@ void	ft_free(char **lst)
 
 void remove_extra_spaces(char *str) 
 {
-	char *src = str;
-	char *dst = str;
-	int inside_quotes = 0;
-
+	char *src;
+	char *dst;
+	int inside_quotes;
+		
+	src = str;
+	dst = str;
+	inside_quotes = 0;
 	while (*src) 
 	{
 		if (*src == '"') 
@@ -37,11 +40,12 @@ void remove_extra_spaces(char *str)
 
 void epur_str(char *str)
 {
+	char *end;
+	
 	remove_extra_spaces(str);
 	while (*str == ' ')
 		str++;
-
-	char *end = str;
+	end = str;
 	while (*end != '\0')
 		end++;
 	end--; 
@@ -54,27 +58,25 @@ void epur_str(char *str)
 
 int str_len(const char *str) 
 {
-	int len = strlen(str);
-	int newLen = len;
-	int i = 0;
-	int inquotes = 0;
+	int len;
+	int newLen;
+	int i;
+	int inquotes;
 
+	len = strlen(str);
+	newLen = len;
+	i = 0;
+	inquotes = 0;
 	while (i < len)
 	{
 		if (str[i] == '"')
-		{
 			inquotes = !inquotes;
-		}
 		else if (!inquotes && (str[i] == '|' || (str[i] == '>') || (str[i] == '<')))
 		{
 			if (i == 0 || str[i - 1] != ' ')
-			{
 				newLen += 1;
-			}
-			if (i == len - 1 || str[i + 1] != ' ') 
-			{
+			if (i == len - 1 || str[i + 1] != ' ')
 				newLen += 1;
-			}
 		}
 		i++;
 	}
@@ -106,8 +108,11 @@ int str_len(const char *str)
 
 int get_len(char *str)
 {
-	int i = 0;
-	int len = 0;
+	int i;
+	int len;
+
+	i = 0;
+	len = 0;
 	while (str[i])
 	{
 		if (str[i] == '\'' || str[i] == '"' || str[i] == '\\' || str[i] == '/' || str[i] == '(' || str[i] == ')')
@@ -116,33 +121,34 @@ int get_len(char *str)
 			i++;
 		}
 		else 
-		i++;
+			i++;
 	}
 	return (len);
 }
 
 void fix_it_again(char *str)
 {
-	int i = 0;
-	int j = 0;
-	while (str[i])
+	t_index index;
+
+	memset(&index, 0, sizeof(index));
+	while (str[index.i])
 	{
-		if (str[i] == '>' && str[i + 1] == ' '  && str[i + 2] == ' ' && str[i + 3] == '>')
+		if (str[index.i] == '>' && str[index.i + 1] == ' '  && str[index.i + 2] == ' ' && str[index.i + 3] == '>')
 		{
-			str[j] = str[i];
-			i += 3;
-			j++;
+			str[index.j] = str[index.i];
+			index.i += 3;
+			index.j++;
 		}
-		else if (str[i] == '<' && str[i + 1] == ' '  && str[i + 2] == ' ' && str[i + 3] == '<')
+		else if (str[index.i] == '<' && str[index.i + 1] == ' '  && str[index.i + 2] == ' ' && str[index.i + 3] == '<')
 		{
-			str[j] = str[i];
-			i += 3;
-			j++;
+			str[index.j] = str[index.i];
+			index.i += 3;
+			index.j++;
 		}
-		str[j] = str[i];
-		j++;
-		i++;
+		str[index.j] = str[index.i];
+		index.j++;
+		index.i++;
 	}
-	str[j] = '\0';
+	str[index.j] = '\0';
 }
 
