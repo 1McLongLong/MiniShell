@@ -1,10 +1,13 @@
 #include "header.h"
 
-
-char *find_dollar(char *str)
+char	*find_dollar(char *str)
 {
-	int i = 0;
-	int j = -1;
+	char	*substring;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = -1;
 	while (str[i])
 	{
 		if (str[i] == '$')
@@ -15,96 +18,99 @@ char *find_dollar(char *str)
 			{
 				i++;
 			}
-			break;
+			break ;
 		}
 		i++;
 	}
 	if (j == -1)
-		return NULL;
-	char *substring = malloc(sizeof(char) * (i - j));
+		return (NULL);
+	substring = malloc(sizeof(char) * (i - j));
 	ft_strlcpy(substring, &str[j + 1], i - j);
 	return (substring);
 }
 
-void quotes(x_node *p_list, char *env)
+void	quotes(x_node *p_list, char *env)
 {
-	int i = 0;
-	int j = 0;
-	(void)p_list;
+	char *expand;
+	char *temp;
+	char *temp2;
+	char *l_temp;
+	int i;
+	int j;
+	int end;
+
+	i = 0;
+	j = 0;
 	while (p_list->str[i])
 	{
 		if (p_list->str[0] == '"')
 		{
+			expand = getenv(env);
 			while (p_list->str[i] != '$')
 				i++;
-			char *temp = ft_substr(p_list->str, 0, i);
+			temp = ft_substr(p_list->str, 0, i);
 			while (p_list->str[j])
 				j++;
-			int end = j;
+			end = j;
 			while (j > 0 && !(ft_isalnum(p_list->str[j])) && p_list->str[j] != '_')
 				j--;
 			j++;
-			char *temp2 = ft_substr(p_list->str, j, end - j);
-			char *expand = getenv(env);
+			temp2 = ft_substr(p_list->str, j, end - j);
+			free(p_list->str);
 			p_list->str = ft_strjoin(temp, expand);
-			char *l_temp = p_list->str;
+			l_temp = p_list->str;
 			p_list->str = ft_strjoin(l_temp, temp2);
-		} 
+			free(temp);
+			free(temp2);
+		}
 		else if (p_list->str[0] == '\'')
 		{
-			/*while (p_list->str[i] != '$')
-				i++;
-			char *temp = ft_substr(p_list->str, 1, i - 1);
-			while (p_list->str[j])
-				j++;
-			int end = j;
-			while (!(ft_isalpha(p_list->str[j])) && p_list->str[j] != '_')
-				j--;
-			j++;
-			char *temp2 = ft_substr(p_list->str, j, end - j - 1);
-			printf("temp2: %s\n", temp2);
-			char *not_expand = ft_substr(p_list->str, i, j - 1);
-			printf("not_expand: %s\n", not_expand);
-			p_list->str = ft_strjoin(temp, not_expand);
-			char *l_temp = p_list->str;
-			p_list->str = ft_strjoin(l_temp, temp2);*/
 			while (p_list->str[i])
 				i++;
-			char *temp = ft_substr(p_list->str, 0, i);
+			temp = ft_substr(p_list->str, 0, i);
+			free(p_list->str);
 			p_list->str = strdup(temp);
+			free(temp);
 		}
 		else
 		{
-			char *expand = getenv(env);
-			char *temp = NULL;
+			expand = getenv(env);
+			temp = NULL;
 			if (p_list->str[0] != '$')
 			{
 				while (p_list->str[i] != '$')
-				i++;
+					i++;
 				temp = ft_substr(p_list->str, 0, i);
 			}
 			while (p_list->str[j])
 				j++;
-			int end = j;
+			end = j;
 			while (j >= 0 && !(ft_isalnum(p_list->str[j])) && p_list->str[j] != '_')
 				j--;
 			j++;
-			char *temp2 = ft_substr(p_list->str, j, end - j);
+			temp2 = ft_substr(p_list->str, j, end - j);
+			free(p_list->str);
 			p_list->str = ft_strjoin(temp, expand);
-			char *l_temp = p_list->str;
+			l_temp = p_list->str;
 			p_list->str = ft_strjoin(l_temp, temp2);
+			if (temp != NULL)
+				free(temp);
+			free(temp2);
 		}
-		break;
+		break ;
 	}
 }
 
 
-void expand(p_dblst *p_list)
+void	expand(p_dblst *p_list)
 {
-	x_node *temp = p_list->head;
+	char	*str;
+	x_node	*temp;
+
+	temp = p_list->head;
 	while (temp)
 	{
-		char *str = find_dollar(temp->str);
+		str = find_dollar(temp->str);
 		if (str != NULL)
 		{
 			quotes(temp, str);
@@ -112,7 +118,7 @@ void expand(p_dblst *p_list)
 			temp = temp->next;
 		}
 		else
-		temp = temp->next;
+			temp = temp->next;
 	}
 	// print(p_list);
 }

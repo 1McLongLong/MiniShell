@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 
 SRCF = $(addprefix src/, main.c list_utils.c helper.c lexer.c tokenizer.c expand.c fix_quotes.c \
 			 remove_quotes.c redirect.c expand_redirect.c token_split.c exec_line.c)

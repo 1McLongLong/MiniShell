@@ -38,7 +38,7 @@ void	free_list(t_dblst *list)
 {
 	t_node	*current;
 	t_node	*next;
-	
+
 	current = list->head;
 	while (current != NULL)
 	{
@@ -52,7 +52,7 @@ void	free_list(t_dblst *list)
 	list->tail = NULL;
 }
 
-void print_list(t_dblst *list)
+void	print_list(t_dblst *list)
 {
 	t_node *temp;
 
@@ -70,14 +70,16 @@ void print_list(t_dblst *list)
 	}
 }
 
-void add_list(char **str, t_dblst *list)
+void	add_list(char **str, t_dblst *list)
 {
+	int i;
+
+	i = 0;
 	if (str == NULL)
 		return ;
-	int i = 0;
 	while (str[i])
 	{
-		add_to_list(list,	str[i]);
+		add_to_list(list, str[i]);
 		i++;
 	}
 }

@@ -14,7 +14,7 @@ int main(int argc, char **argv, char **env)
 	while (1)
 	{
 		// e_node *env_list = NULL;
-		// atexit(f);
+		atexit(f);
 		t_dblst list;
 		list.head = NULL;
 		list.tail = NULL;
@@ -27,7 +27,7 @@ int main(int argc, char **argv, char **env)
 		// free_envlist(env_list);
 		free_list(&list);
 		free(line);
-		// break;
+		break;
 	}
 }
 

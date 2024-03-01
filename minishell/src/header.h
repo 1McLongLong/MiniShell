@@ -97,7 +97,7 @@ void expand(p_dblst *p_list);
 p_dblst tokenize_list(char *str);
 void lexer(char *line, t_dblst *list);
 void epur_str(char *str); 
-int str_len(const char *str);
+int str_len(char *str);
 int get_len(char *str);
 void fix_it_again(char *str);
 char* fix_quotes(char *input);

@@ -1,38 +1,24 @@
 #include "header.h"
 
-x_node *create_snode(char *data)
+x_node	*create_snode(char *data)
 {
-	x_node *new_node = malloc(sizeof(x_node));
+	x_node	*new_node;
+
+	new_node = malloc(sizeof(x_node));
 	if (new_node == NULL)
-		return NULL;
+		return (NULL);
 	new_node->fd_in = 0;
 	new_node->fd_out = 1;
 	new_node->type = 0;
 	new_node->str = strdup(data);
 	new_node->next = NULL;
 	new_node->prev = NULL;
-	return new_node;
+	return (new_node);
 }
-/*x_node *add_to_slist(x_node *list, char *data)
-{
-	x_node *new_node = create_snode(data);
-	if (new_node == NULL)
-		return NULL;
-	if (list == NULL)
-		list = new_node;
-	else
-	{
-		x_node *current = list;
-		while (current->next != NULL)
-			current = current->next;
-		current->next = new_node;
-	}
-	return list;
-}*/
 
-void add_to_slist(p_dblst *list, char *data)
+void	add_to_slist(p_dblst *list, char *data)
 {
-	x_node *new_node;
+	x_node	*new_node;
 
 	new_node = create_snode(data);
 	if (list->head == NULL)
@@ -65,10 +51,13 @@ void	free_slist(p_dblst *list)
 	list->tail = NULL;
 }
 
-void add_slist(char *str, p_dblst *list)
+void	add_slist(char *str, p_dblst *list)
 {
-	int i = 0;
-	char **split = token_split(str, ' ');
+	char	**split;
+	int		i;
+
+	i = 0;
+	split = token_split(str, ' ');
 	while (split[i])
 	{
 		add_to_slist(list, split[i]);
@@ -77,10 +66,13 @@ void add_slist(char *str, p_dblst *list)
 	ft_free(split);
 }
 
-void remove_spaces(char *str)
+void	remove_spaces(char *str)
 {
-	int i = 0;
-	int inside_quotes = 0;
+	int	i;
+	int	inside_quotes;
+
+	i = 0;
+	inside_quotes = 0;
 	while (str[i])
 	{
 		if (str[i] == '"')
@@ -93,21 +85,7 @@ void remove_spaces(char *str)
 	}
 }
 
-// void print(x_node *list)
-// {
-// 	x_node *temp;
-//
-// 	temp = list;
-// 	while (temp)
-// 	{
-// 		// printf("%s ---------- %d\n", temp->str, temp->type);
-// 		printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
-// 		// printf("%s\n", temp->str);
-// 		temp = temp->next; 
-// 	}
-// }
-
-void print(p_dblst *list)
+void	print(p_dblst *list)
 {
 	x_node *temp;
 
@@ -122,9 +100,11 @@ void print(p_dblst *list)
 	}
 }
 
-void tokenize_my_list(p_dblst *list)
+void	tokenize_my_list(p_dblst *list)
 {
-	x_node *head = list->head;
+	x_node *head;
+
+	head = list->head;
 	head->type = COMMAND;
 	head = head->next;
 	while (head)
@@ -157,10 +137,10 @@ void tokenize_my_list(p_dblst *list)
 		else if (!(strcmp(head->str, ">>")))
 		{
 			head->type = APPEND;
-				if (head->next == NULL)
+			if (head->next == NULL)
 				break ;
 			head->next->type = DELIMITER;
-		}	
+		}
 		else if (!(strcmp(head->str, "<<")))
 		{
 			head->type = HERDOC;
@@ -175,15 +155,14 @@ void tokenize_my_list(p_dblst *list)
 }
 
 
-p_dblst tokenize_list(char *str)
+p_dblst	tokenize_list(char *str)
 {
-	p_dblst list;
+	p_dblst	list;
+
 	list.head = NULL;
 	list.tail = NULL;
 	remove_spaces(str);
-	//printf("%s\n", str);
 	add_slist(str, &list);
 	tokenize_my_list(&list);
-	// print(&list);
 	return (list);
 }

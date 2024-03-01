@@ -1,119 +1,103 @@
 #include "header.h"
 
-
-int fix_input(char *line)
+int	fix_input(char *line)
 {
-	epur_str(line);
+	int	i;
+	int	inside_quotes;
+
+	inside_quotes = 0;
+	i = 0;
 	if (line[0] == '#')
 		return (0);
-	int i = 0;
-	int inside_quotes = 0;
+	epur_str(line);
 	while (line[i])
 	{
 		if (line[i] == '"')
 			inside_quotes = !inside_quotes;
 		if (!inside_quotes && line[i] == '|' && line[i + 1] == '|')
-		{
-			printf("Syntax error!\n");
-			return (0);
-		}
+			return (printf("Syntax error!\n"), 0);
 		else if (line[i] == '>' && line[i + 1] == ' ' && line[i + 2] == '>')
-		{
-			printf("Syntax error!\n");
-			return (0);
-		}
+			return (printf("Syntax error!\n"), 0);
 		else if (line[i] == '<' && line[i + 1] == ' ' && line[i + 2] == '<')
-		{
-			printf("Syntax error!\n");
-			return (0);
-		}
+			return (printf("Syntax error!\n"), 0);
 		i++;
 	}
 	return (1);
 }
 
-char *fix_line(char *str)
-{ 
-	int len = str_len(str);
-	char *result = malloc(sizeof(char) * (len + 1));
+char	*fix_line(char *str)
+{
+	t_index	index;
+	int		len;
+	int		inquotes;
+	char	*result;
+
+	len = str_len(str);
+	result = malloc(sizeof(char) * (len + 1));
 	if (!result)
 		return (NULL);
-	int j = 0;
-	int inquotes = 0;
-
-	int i = 0;
-	while (i < len && j < len) 
+	inquotes = 0;
+	memset(&index, 0, sizeof(t_index));
+	while (index.i < len && index.j < len)
 	{
-		if (str[i] == '"')
+		if (str[index.i] == '"')
 		{
 			inquotes = !inquotes;
-			result[j++] = str[i];
+			result[index.j++] = str[index.i];
 		}
-		else if (!inquotes && (str[i] == '|' || (str[i] == '>') || (str[i] == '<'))) 
+		else if (!inquotes && (str[index.i] == '|' || (str[index.i] == '>') || (str[index.i] == '<')))
 		{
-			if (i > 0 && str[i - 1] != ' ')
-			{
-				result[j++] = ' '; 
-			}
-			result[j++] = str[i];
-			if (i < len - 1 && str[i + 1] != ' ') 
-			{
-				result[j++] = ' '; 
-			}
-		} 
-		else 
-		{
-			result[j++] = str[i];	
+			if (index.i > 0 && str[index.i - 1] != ' ')
+				result[index.j++] = ' ';
+			result[index.j++] = str[index.i];
+			if (index.i < len - 1 && str[index.i + 1] != ' ')
+				result[index.j++] = ' ';
 		}
-		i++;
+		else
+			result[index.j++] = str[index.i];
+		index.i++;
 	}
-	result[j] = '\0';
+	result[index.j] = '\0';
 	fix_it_again(result);
-	return (result); 
+	return (result);
 }
 
-int check_quotes(char *input) 
+int	check_quotes(char *input)
 {
-	int singleQuotes = 0;
-	int doubleQuotes = 0;
-	int escaped = 0;
+	int	singlequotes;
+	int	doublequotes;
+	int	escaped;
+	int	i;
 
-	for (int i = 0; input[i] != '\0'; i++) 
+	singlequotes = 0;
+	doublequotes = 0;
+	escaped = 0;
+	i = 0;
+	while (input[i] != '\0')
 	{
 		if (input[i] == '\\' && !escaped)
-		{
-			// If the backslash is not escaped, set the escaped flag
 			escaped = 1;
-		}
-		else if (input[i] == '\'' && !escaped && doubleQuotes % 2 == 0) 
-		{
-			// Single quote outside double quotes
-			singleQuotes++;
-		}
-		else if (input[i] == '\"' && !escaped && singleQuotes % 2 == 0) 
-		{
-			// Double quote outside single quotes
-			doubleQuotes++;
-		}
-		// Reset escaped flag if the current character is not a backslashi 
+		else if (input[i] == '\'' && !escaped && doublequotes % 2 == 0) 
+			singlequotes++;
+		else if (input[i] == '\"' && !escaped && singlequotes % 2 == 0) 
+			doublequotes++;
 		if (input[i] == '\\' && escaped)
 			escaped = 0;
+		i++;
 	}
-	// Check if the total count of quotes is even
-	if (singleQuotes % 2 != 0 || doubleQuotes % 2 != 0) 
-	{
-		printf("Syntax error!\n");
-		return 0;
-	}
-	return 1;
+	if (singlequotes % 2 != 0 || doublequotes % 2 != 0) 
+		return (printf("Syntax error!\n"), 0);
+	return (1);
 }
 
-
-void remove_spaces_inq(char **str)
+void	remove_spaces_inq(char **str)
 {
-	int i = 0;
-	int inside_quotes = 0;
-	int j;
+	int	i;
+	int	inside_quotes;
+	int	j;
+
+	i = 0;
+	inside_quotes = 0;
 	while (str[i])
 	{
 		j = 0;
@@ -131,14 +115,14 @@ void remove_spaces_inq(char **str)
 	}
 }
 
-void add_spaces_back(t_dblst *list) 
+void	add_spaces_back(t_dblst *list)
 {
-	t_node *temp;
-	int i;
-	int j;
+	t_node	*temp;
+	int		i;
+	int		j;
 
 	temp = list->head;
-	while (temp != NULL) 
+	while (temp != NULL)
 	{
 		i = 0;
 		while (temp->arg[i])
@@ -146,7 +130,7 @@ void add_spaces_back(t_dblst *list)
 			j = 0;
 			while (temp->arg[i][j])
 			{
-				if (temp->arg[i][j] == -32) 
+				if (temp->arg[i][j] == -32)
 				{
 					temp->arg[i][j] *= -1;
 				}
@@ -158,60 +142,58 @@ void add_spaces_back(t_dblst *list)
 	}
 }
 
-int check_syntax(p_dblst *list)
+int	check_syntax(p_dblst *list)
 {
-	x_node *head = list->head;
+	x_node *head;
+
+	head = list->head;
 	if (strcmp(head->str, "|") == 0 && head->next->type == STRING)
+		return (printf("bash: syntax error near unexpected token\n"), 1);
+	while (head)
 	{
-		printf("bash: syntax error near unexpected token\n");
-		return (1);
-	}
-	while(head)
-	{
-		if ((head->type == REDIN && head->next && head->next->type == PIPE) ||
-			(head->type == REDOUT && head->next && head->next->type == PIPE) ||
-			(head->type == APPEND && head->next && head->next->type == PIPE) ||
-			(head->type == APPEND && head->next && head->next->type == REDOUT) ||
-			(head->type == APPEND && head->next && head->next->type == APPEND) ||
-			(head->type == HERDOC && head->next && head->next->type == PIPE) ||
-			(head->type == HERDOC && head->next && head->next->type == HERDOC) ||
-			(head->type == HERDOC && head->next && head->next->type == REDIN) ||
-			(head->type == HERDOC && head->next && head->next->type == REDOUT) ||
-			(head->type == HERDOC && head->next && head->next->type == APPEND) ||
-			(head->type == PIPE && head->next && head->next->type == REDIN) ||
-			(head->type == PIPE && head->next && head->next->type == REDOUT) ||
-			(head->type == PIPE && head->next && head->next->type == APPEND) ||
-			(head->type == PIPE && head->next && head->next->type == HERDOC) ||
-			(head->type == PIPE && head->next && head->next->type == PIPE) ||
-			(strcmp(head->str, "|") == 0 && head->next == NULL) ||
-			(strcmp(head->str, ">>") == 0 && head->next == NULL) ||
-			(strcmp(head->str, "<<") == 0 && head->next == NULL) ||
-			(strcmp(head->str, ">") == 0 && head->next == NULL) ||
-			(strcmp(head->str, "!") == 0 && head->next == NULL) ||
-			(strcmp(head->str, "<") == 0 && head->next == NULL))
-		{
-			printf("bash: syntax error near unexpected token\n");
-			return (1);
-		}
+		if ((head->type == REDIN && head->next && head->next->type == PIPE)
+			|| (head->type == REDOUT && head->next && head->next->type == PIPE)
+			|| (head->type == APPEND && head->next && head->next->type == PIPE)
+			|| (head->type == APPEND && head->next && head->next->type == REDOUT)
+			|| (head->type == APPEND && head->next && head->next->type == APPEND)
+			|| (head->type == HERDOC && head->next && head->next->type == PIPE) 
+			|| (head->type == HERDOC && head->next && head->next->type == HERDOC)
+			|| (head->type == HERDOC && head->next && head->next->type == REDIN)
+			|| (head->type == HERDOC && head->next && head->next->type == REDOUT)
+			|| (head->type == HERDOC && head->next && head->next->type == APPEND)
+			|| (head->type == PIPE && head->next && head->next->type == REDIN)
+			|| (head->type == PIPE && head->next && head->next->type == REDOUT)
+			|| (head->type == PIPE && head->next && head->next->type == APPEND)
+			|| (head->type == PIPE && head->next && head->next->type == HERDOC)
+			|| (head->type == PIPE && head->next && head->next->type == PIPE)
+			|| (strcmp(head->str, "|") == 0 && head->next == NULL)
+			|| (strcmp(head->str, ">>") == 0 && head->next == NULL)
+			|| (strcmp(head->str, "<<") == 0 && head->next == NULL)
+			|| (strcmp(head->str, ">") == 0 && head->next == NULL)
+			|| (strcmp(head->str, "!") == 0 && head->next == NULL)
+			|| (strcmp(head->str, "<") == 0 && head->next == NULL))
+			return (printf("bash: syntax error near unexpected token\n"), 1);
 		head = head->next;
 	}
 	return (0);
 }
 
-void add_redi_to_list(t_dblst *list, p_dblst *p_list)
+void	add_redi_to_list(t_dblst *list, p_dblst *p_list)
 {
-	t_node *e_temp;
-	x_node *p_temp;
+	t_node	*e_temp;
+	x_node	*p_temp;
 
 	e_temp = list->head;
 	p_temp = p_list->head;
 	while (p_temp)
 	{
-		if (p_temp->next && (strcmp(p_temp->str, ">") == 0 || strcmp(p_temp->str, ">>") == 0))
+		if (p_temp->next && (strcmp(p_temp->str, ">") == 0
+			|| strcmp(p_temp->str, ">>") == 0))
 		{
 			e_temp->fd_out = p_temp->next->fd_out;
 		}
-		if (p_temp->next && (strcmp(p_temp->str, "<") == 0 || strcmp(p_temp->str, "<<") == 0))
+		if (p_temp->next && (strcmp(p_temp->str, "<") == 0
+			|| strcmp(p_temp->str, "<<") == 0))
 		{
 			e_temp->fd_in = p_temp->next->fd_in;
 		}
@@ -222,9 +204,9 @@ void add_redi_to_list(t_dblst *list, p_dblst *p_list)
 }
 
 
-void lexer(char *line, t_dblst *list)
+void	lexer(char *line, t_dblst *list)
 {
-	p_dblst p_list;
+	p_dblst	p_list;
 	if (!(fix_input(line))) // || inside quotes is not working
 		return ;
 	char *fixed_line = fix_line(line);

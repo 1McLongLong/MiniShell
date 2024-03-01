@@ -1,12 +1,14 @@
 #include "header.h"
 
-void delete_node(p_dblst **list)
+void	delete_node(p_dblst **list)
 {
-	x_node *current = (*list)->head;
-	x_node *prev = NULL;
-	x_node *next;
+	x_node	*current;
+	x_node	*next;
+	x_node	*prev;
 
-	while (current) 
+	prev = NULL;
+	current = (*list)->head;
+	while (current)
 	{
 		if (strcmp(current->str, "\"\"") == 0)
 		{
@@ -15,16 +17,16 @@ void delete_node(p_dblst **list)
 			if (prev)
 				prev->next = next;
 			else
-				(*list)->head = next;  // Update list if the first node is being deleted
+				(*list)->head = next;
 			if (next)
 				next->prev = prev;
 			if (next == NULL)
 			{
 				(*list)->head = NULL;
-				return;
+				return ;
 			}
 			current = next;
-		} 
+		}
 		else
 		{
 			prev = current;
@@ -33,134 +35,54 @@ void delete_node(p_dblst **list)
 	}
 }
 
-void remove_quotes(p_dblst *p_list)
+void	remove_quotes(p_dblst *p_list)
 {
+	x_node	*head;
+	char	*temp;
+
 	if (p_list == NULL || p_list->head == NULL)
 		return ;
 	delete_node(&p_list);
-	x_node *head = p_list->head;
+	head = p_list->head;
 	while (head)
 	{
 		if (head->str && (head->str[0] == '"' || head->str[0] == '\''))
 		{
-			char *temp = head->str;
+			temp = head->str;
 			head->str = ft_substr(temp, 1, ft_strlen(temp) - 2);
 			free(temp);
 		}
 		head = head->next;
 	}
 }
-/*
-void remove_double(char *str)
+
+void	remove_line_quotes(char *str)
 {
-    int i = 0;
-    int j = 0;
-    int inside_quotes = 0;
+	t_index	index;
+	int		inside_dquotes;
+	int		inside_s_quotes;
 
-    while (str[i])
-    {
-        if (str[i] == '\"')
-        {
-            inside_quotes = !inside_quotes;
-            i++;
-        }
-        else if (inside_quotes)
-        {
-            if (str[i] != '\"')
-            {
-                str[j] = str[i];
-                j++;
-            }
-            i++;
-        }
-        else
-        {
-            str[j] = str[i];
-            i++;
-            j++;
-        }
-    }
-    str[j] = '\0'; // Terminate the modified string
-}
-
-void remove_single(char *str)
-{
-    int i = 0;
-    int j = 0;
-    int inside_quotes = 0;
-
-    while (str[i])
-    {
-        if (str[i] == '\'')
-        {
-            inside_quotes = !inside_quotes;
-            i++;
-        }
-        else if (inside_quotes)
-        {
-            if (str[i] != '\'')
-            {
-                str[j] = str[i];
-                j++;
-            }
-            i++;
-        }
-        else
-        {
-            str[j] = str[i];
-            i++;
-            j++;
-        }
-    }
-    str[j] = '\0'; // Terminate the modified string
-}
-
-
-void remove_line_quotes(char *str)
-{
-	printf("str: %s\n", str);
-	remove_double(str);
-	printf("double: str: %s\n", str);
-	remove_single(str);
-	printf("single: str: %s\n", str);
-}
-*/
-
-
-
-void remove_line_quotes(char *str)
-{
-    int i = 0;
-    int j = 0;
-    int inside_quotes = 0;
-    int inside_single_quotes = 0;
-
-    while (str[i])
-    {
-        if (str[i] == '\"' && !inside_single_quotes)
-        {
-            inside_quotes = !inside_quotes;
-            i++;
-        }
-        else if (str[i] == '\'' && !inside_quotes)
-        {
-            inside_single_quotes = !inside_single_quotes;
-            i++;
-        }
-        else if (inside_quotes || inside_single_quotes)
-        {
-            str[j] = str[i];
-            i++;
-            j++;
-        }
-        else
-        {
-            str[j] = str[i];
-            i++;
-            j++;
-        }
-    }
-    str[j] = '\0'; // Terminate the modified string
+	inside_dquotes = 0;
+	inside_s_quotes = 0;
+	memset(&index, 0, sizeof(index));
+	while (str[index.i])
+	{
+		if (str[index.i] == '\"' && !inside_s_quotes)
+		{
+			inside_dquotes = !inside_dquotes;
+			index.i++;
+		}
+		else if (str[index.i] == '\'' && !inside_dquotes)
+		{
+			inside_s_quotes = !inside_s_quotes;
+			index.i++;
+		}
+		else if (inside_dquotes || inside_s_quotes)
+			str[index.j++] = str[index.i++];
+		else
+			str[index.j++] = str[index.i++];
+	}
+	str[index.j] = '\0';
 }
 
 
