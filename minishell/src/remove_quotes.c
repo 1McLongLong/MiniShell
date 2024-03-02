@@ -1,37 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   remove_quotes.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/02 13:48:19 by touahman          #+#    #+#             */
+/*   Updated: 2024/03/02 20:10:25 by touahman         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "header.h"
+
+void	delete_node_from_list(p_dblst **list, x_node *node)
+{
+	if (node == NULL || *list == NULL || (*list)->head == NULL)
+		return ;
+	if (node == (*list)->head)
+		(*list)->head = node->next;
+	if (node->prev != NULL)
+		node->prev->next = node->next;
+	if (node->next != NULL)
+		node->next->prev = node->prev;
+	free(node);
+}
 
 void	delete_node(p_dblst **list)
 {
 	x_node	*current;
 	x_node	*next;
-	x_node	*prev;
 
-	prev = NULL;
 	current = (*list)->head;
-	while (current)
+	while (current != NULL)
 	{
+		next = current->next;
 		if (strcmp(current->str, "\"\"") == 0)
 		{
-			next = current->next;
-			free(current);
-			if (prev)
-				prev->next = next;
-			else
-				(*list)->head = next;
-			if (next)
-				next->prev = prev;
-			if (next == NULL)
-			{
-				(*list)->head = NULL;
-				return ;
-			}
-			current = next;
+			delete_node_from_list(list, current);
 		}
-		else
-		{
-			prev = current;
-			current = current->next;
-		}
+		current = next;
 	}
 }
 
@@ -84,12 +91,3 @@ void	remove_line_quotes(char *str)
 	}
 	str[index.j] = '\0';
 }
-
-
-
-
-
-
-
-
-

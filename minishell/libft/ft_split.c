@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: touahman <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 18:19:54 by touahman          #+#    #+#             */
-/*   Updated: 2023/11/04 18:19:56 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/02 15:23:19 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ char **ft_split(char const *s, char c)
 }
 */
 
-
 static int	count_words(char const *str, char c)
 {
 	int	word_flag;
@@ -207,8 +206,7 @@ char	**ft_split(char const *s, char c)
 	int		words_count;
 	char	**full_str;
 
-
-	if (s == NULL) 
+	if (s == NULL)
 		return (NULL);
 	words_count = count_words(s, c);
 	full_str = malloc(sizeof(char *) * (words_count + 1));

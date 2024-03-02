@@ -6,12 +6,11 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 12:20:43 by touahman          #+#    #+#             */
-/*   Updated: 2024/02/06 18:47:45 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/02 15:22:03 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 char	*f_strjoin(char *s1, char *s2)
 {
@@ -40,5 +39,3 @@ char	*f_strjoin(char *s1, char *s2)
 	str[i] = '\0';
 	return (str);
 }
-
-

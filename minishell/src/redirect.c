@@ -1,65 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/02 19:29:55 by touahman          #+#    #+#             */
+/*   Updated: 2024/03/02 19:29:56 by touahman         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "header.h"
-
-int	delim_quotes(char *delim)
-{
-	int	i;
-
-	i = 0;
-	while (delim[i])
-	{
-		if (delim[i] == '\"' || delim[i] == '\'')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-void	herdoc(x_node *list)
-{
-	x_node	*temp;
-	char	*delimiter;
-	char	*temp_file;
-	char	*buffer;
-	int		fd;
-
-	temp_file = "/tmp/heredoc_tempfile";
-	temp = list;
-	delimiter = temp->next->str;
-	fd = open(temp_file, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR);
-	if (fd == -1)
-	{
-		perror("open");
-	}
-	while (1)
-	{
-		buffer = readline("> ");
-		if (strcmp(buffer, delimiter) == 0)
-		{
-			free(buffer);
-			break ;
-		}
-		if (delim_quotes(delimiter))
-			expand_redir(&buffer);
-		write(fd, buffer, strlen(buffer));
-		write(fd, "\n", 1);
-		free(buffer);
-	}
-	temp->next->fd_in = fd;
-	 // close(fd);
-//   fd = open(temp_filename, O_RDONLY);
-//   if (fd == -1) {
-//     perror("open");
-//     exit(EXIT_FAILURE);
-//   }
-
-//   char ch;
-//   while (read(fd, &ch, 1) == 1) {
-//     putchar(ch);
-//   }
-  // close(fd);
-  unlink(temp_file);
-}
-
 
 void	check_opened_fd(p_dblst *list, x_node *last_fnode, int flag)
 {
@@ -86,43 +37,56 @@ void	check_opened_fd(p_dblst *list, x_node *last_fnode, int flag)
 	}
 }
 
+void	redirect_output(p_dblst *list, x_node *temp)
+{
+	int	fd;
+
+	check_opened_fd(list, temp, 1);
+	fd = open(temp->next->str, O_CREAT | O_RDWR);
+	if (fd == -1)
+		perror("ERROR");
+	temp->next->fd_out = fd;
+}
+
+void	redirect_input(p_dblst *list, x_node *temp)
+{
+	int	fd;
+
+	check_opened_fd(list, temp, 0);
+	fd = open(temp->next->str, O_CREAT | O_RDONLY);
+	if (fd == -1)
+		perror("ERROR");
+	temp->next->fd_in = fd;
+}
+
+void	redirect_append(p_dblst *list, x_node *temp)
+{
+	int	fd;
+
+	check_opened_fd(list, temp, 1);
+	fd = open(temp->next->str, O_CREAT | O_RDWR | O_TRUNC);
+	if (fd == -1)
+		perror("ERROR");
+	temp->next->fd_out = fd;
+}
 
 void	redirections(p_dblst *list)
 {
 	x_node	*temp;
-	int		fd;
 
 	temp = list->head;
 	while (temp)
 	{
 		if (strcmp(temp->str, ">") == 0 && temp->next)
-		{
-			check_opened_fd(list, temp, 1);
-			fd = open(temp->next->str, O_CREAT | O_RDWR);
-			if (fd == -1)
-				perror("ERROR");
-			temp->next->fd_out = fd;
-		}
+			redirect_output(list, temp);
 		else if (strcmp(temp->str, "<") == 0 && temp->next)
-		{
-			check_opened_fd(list, temp, 0);
-			fd = open(temp->next->str, O_CREAT | O_RDONLY);
-			if (fd == -1)
-				perror("ERROR");
-			temp->next->fd_in = fd;
-		}
+			redirect_input(list, temp);
 		else if (strcmp(temp->str, ">>") == 0 && temp->next)
-		{
-			check_opened_fd(list, temp, 1);
-			fd = open(temp->next->str, O_CREAT | O_RDWR | O_TRUNC);
-			if (fd == -1)
-				perror("ERROR");
-			temp->next->fd_out = fd;
-		}
+			redirect_append(list, temp);
 		else if (strcmp(temp->str, "<<") == 0 && temp->next)
 		{
 			check_opened_fd(list, temp, 0);
-			herdoc(temp);
+			heredoc(temp);
 		}
 		temp = temp->next;
 	}

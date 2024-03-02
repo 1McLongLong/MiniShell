@@ -80,40 +80,40 @@ char *fix_quotes(char *input)
 				}
 				else
 					output[j++] = '\"';
-		}
-		else
-		{
-			if (i > 0 && input[i - 1] != ' ' && output[j - 1] != ' ' && input[i - 1] != '\0' && !insideSingleQuotes) 
-				output[j++] = ' ';
-			output[j++] = '\"';
-		}
-		insideQuotes = !insideQuotes;
+			}
+			else
+			{
+				if (i > 0 && input[i - 1] != ' ' && output[j - 1] != ' ' && input[i - 1] != '\0' && !insideSingleQuotes)
+					output[j++] = ' ';
+				output[j++] = '\"';
+			}
+			insideQuotes = !insideQuotes;
 		}
 		else if (input[i] == '\'' && !insideQuotes)
 		{
 			if (insideSingleQuotes)
 			{
-        if (input[i + 1] != ' ' && input[i + 1] != '\0')
-        {
-          output[j++] = '\'';
-          output[j++] = ' ';
-        }
-        else
-          output[j++] = '\'';
-      }
-      else
-      {
-        if (i > 0 && input[i - 1] != ' ' && output[j - 1] != ' ' && input[i - 1] != '\0' && !insideQuotes) 
-          output[j++] = ' ';
-        output[j++] = '\'';
-      }
-      insideSingleQuotes = !insideSingleQuotes;
-    }
-    else
-      output[j++] = input[i];
-    i++;
-  }
-  output[j] = '\0';     
-  return output;
+				if (input[i + 1] != ' ' && input[i + 1] != '\0')
+				{
+					output[j++] = '\'';
+					output[j++] = ' ';
+				}
+				else
+					output[j++] = '\'';
+			}
+			else
+			{
+				if (i > 0 && input[i - 1] != ' ' && output[j - 1] != ' ' && input[i - 1] != '\0' && !insideQuotes)
+					output[j++] = ' ';
+				output[j++] = '\'';
+			}
+			insideSingleQuotes = !insideSingleQuotes;
+		}
+		else
+			output[j++] = input[i];
+		i++;
+	}
+	output[j] = '\0';
+	return (output);
 }
 

@@ -1,38 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_utils.c                                       :+:      :+:    :+:   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/02 13:47:56 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 19:33:09 by touahman         ###   ########.fr       */
+/*   Created: 2024/03/02 13:46:17 by touahman          #+#    #+#             */
+/*   Updated: 2024/03/02 19:07:59 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-t_node	*create_node(char *data)
+x_node	*create_snode(char *data)
 {
-	t_node	*new_node;
+	x_node	*new_node;
 
-	new_node = malloc(sizeof(t_node));
+	new_node = malloc(sizeof(x_node));
 	if (new_node == NULL)
 		return (NULL);
-	new_node->arg = ft_split(data, ' ');
-	new_node->cmd = strdup(new_node->arg[0]);
 	new_node->fd_in = 0;
 	new_node->fd_out = 1;
-	new_node->prev = NULL;
+	new_node->type = 0;
+	new_node->str = strdup(data);
 	new_node->next = NULL;
+	new_node->prev = NULL;
 	return (new_node);
 }
 
-void	add_to_list(t_dblst *list, char *data)
+void	add_to_slist(p_dblst *list, char *data)
 {
-	t_node	*new_node;
+	x_node	*new_node;
 
-	new_node = create_node(data);
+	new_node = create_snode(data);
 	if (list->head == NULL)
 	{
 		list->head = new_node;
@@ -46,17 +46,16 @@ void	add_to_list(t_dblst *list, char *data)
 	}
 }
 
-void	free_list(t_dblst *list)
+void	free_slist(p_dblst *list)
 {
-	t_node	*current;
-	t_node	*next;
+	x_node	*current;
+	x_node	*next;
 
 	current = list->head;
 	while (current != NULL)
 	{
 		next = current->next;
-		ft_free(current->arg);
-		free(current->cmd);
+		free(current->str);
 		free(current);
 		current = next;
 	}
@@ -64,35 +63,33 @@ void	free_list(t_dblst *list)
 	list->tail = NULL;
 }
 
-void	print_list(t_dblst *list)
+void	add_slist(char *str, p_dblst *list)
 {
-	t_node	*temp;
+	char	**split;
 	int		i;
 
+	i = 0;
+	split = token_split(str, ' ');
+	while (split[i])
+	{
+		add_to_slist(list, split[i]);
+		i++;
+	}
+	ft_free(split);
+}
+/*
+void	print(p_dblst *list)
+{
+	x_node	*temp;
+
 	temp = list->head;
+	// int i;
 	while (temp)
 	{
-		// printf("%s  -------- %d\n", temp->cmd, temp->type);
-		i = 0;
-		while (temp->arg[i])
-			printf("%s ", temp->arg[i++]);
-		// printf("\nin = %d | out = %d", temp->fd_in, temp->fd_out);
-		printf("\n");
+ 		printf("%s ---------- %d\n", temp->str, temp->type);
+ 		// printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
+		// printf("%s\n", temp->str);
 		temp = temp->next; 
 	}
 }
-
-
-void	add_list(char **str, t_dblst *list)
-{
-	int	i;
-
-	i = 0;
-	if (str == NULL)
-		return ;
-	while (str[i])
-	{
-		add_to_list(list, str[i]);
-		i++;
-	}
-}
+*/

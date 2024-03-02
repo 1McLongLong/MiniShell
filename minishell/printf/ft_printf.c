@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 18:34:26 by touahman          #+#    #+#             */
-/*   Updated: 2023/11/22 16:54:46 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/02 15:24:10 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	ft_printf(const char *format, ...)
 	va_list	eve;
 
 	va_start(eve, format);
-	count = 0; 
+	count = 0;
 	while (*format != '\0')
 	{
 		if (*format == '%')
@@ -48,11 +48,10 @@ int	ft_printf(const char *format, ...)
 			print(*(format + 1), eve, &count);
 			format++;
 		}
-		else 
+		else
 			ft_putchar(*format, &count);
 		format++;
 	}
 	va_end(eve);
 	return (count);
 }
-

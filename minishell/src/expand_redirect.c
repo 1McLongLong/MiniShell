@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_redirect.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/02 12:13:54 by touahman          #+#    #+#             */
+/*   Updated: 2024/03/02 15:25:57 by touahman         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "header.h"
 
 static char	*find_dollar(char *str)
@@ -13,7 +25,7 @@ static char	*find_dollar(char *str)
 		if (str[i] == '$')
 		{
 			j = i;
-			i++; 
+			i++;
 			while (str[i] && ((str[i] >= 'a' && str[i] <= 'z')
 					|| (str[i] >= 'A' && str[i] <= 'Z') || str[i] == '_'))
 				i++;
@@ -28,37 +40,31 @@ static char	*find_dollar(char *str)
 	return (substring);
 }
 
-static void	quotes(char **str, char *env)
+static void	red_quotes(char **str, char *env)
 {
 	t_index	index;
-	char	*expand;
-	char	*temp;
-	char	*temp2;
-	char	*l_temp;
-	int		end;
 
 	index.i = 0;
 	index.j = 0;
-	expand = getenv(env);
-	temp = NULL;
+	index.expand = getenv(env);
+	index.temp = NULL;
 	if ((*str)[0] != '$')
 	{
 		while ((*str)[index.i] != '$')
 			index.i++;
-		temp = ft_substr(*str, 0, index.i);
+		index.temp = ft_substr(*str, 0, index.i);
 	}
 	while ((*str)[index.j])
 		index.j++;
-	end = index.j;
+	index.end = index.j;
 	while (!(ft_isalpha((*str)[index.j])) && (*str)[index.j] != '_')
 		index.j--;
 	index.j++;
-	temp2 = ft_substr(*str, index.j, end - index.j);
-	*str = ft_strjoin(temp, expand);
-	l_temp = *str;
-	*str = ft_strjoin(l_temp, temp2);
+	index.temp2 = ft_substr(*str, index.j, index.end - index.j);
+	*str = ft_strjoin(index.temp, index.expand);
+	index.l_temp = *str;
+	*str = ft_strjoin(index.l_temp, index.temp2);
 }
-
 
 void	expand_redir(char **str)
 {
@@ -67,7 +73,7 @@ void	expand_redir(char **str)
 	env = find_dollar(*str);
 	if (env != NULL)
 	{
-		quotes(str, env);
+		red_quotes(str, env);
 		free(env);
 	}
 	return ;
