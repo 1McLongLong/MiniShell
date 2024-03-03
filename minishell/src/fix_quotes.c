@@ -1,119 +1,73 @@
-
 #include "header.h"
 
-int	count_len(char *input)
+void	d_quotes(char *input, char *output, int *inside_d_quotes,
+		int *inside_s_quotes, int *i, int *j)
 {
-	int	size = 0;
-	int	insideQuotes = 0;
-	int	insideSingleQuotes = 0;
-	int	i = 0;
-
-	while (input[i] != '\0')
+	if (*inside_d_quotes)
 	{
-		if (input[i] == '\"' && !insideSingleQuotes)
+		if (input[*i + 1] != ' ' && input[*i + 1] != '\0')
 		{
-			if (insideQuotes)
-			{
-				if (input[i + 1] != ' ' && input[i + 1] != '\0')
-					size += 1;
-				size += 1;
-			}
-			else
-			{
-				if (i > 0 && input[i - 1] != ' ' && input[i - 1] != '\0' && !insideSingleQuotes)
-					size += 1;
-				size += 1;
-			}
-			insideQuotes = !insideQuotes;
-		}
-		else if (input[i] == '\'' && !insideQuotes)
-		{
-			if (insideSingleQuotes)
-			{
-				if (input[i + 1] != ' ' && input[i + 1] != '\0')
-					size += 1;
-				size += 1;
-			}
-			else
-			{
-				if (i > 0 && input[i - 1] != ' ' && input[i - 1] != '\0' && !insideQuotes)
-					size += 1;
-				size += 1;
-			}
-			insideSingleQuotes = !insideSingleQuotes;
+			output[(*j)++] = '\"';
+			output[(*j)++] = ' ';
 		}
 		else
-			size += 1;
-		i++;
+			output[(*j)++] = '\"';
 	}
-	size += 1;
-	return (size);
+	else
+	{
+		if (*i > 0 && input[*i - 1] != ' ' && output[*j - 1] != ' '
+			&& !(*inside_s_quotes))
+			output[(*j)++] = ' ';
+		output[(*j)++] = '\"';
+	}
+	*inside_d_quotes = !(*inside_d_quotes);
 }
 
-char *fix_quotes(char *input)
+void	s_quotes(char *input, char *output, int *inside_d_quotes,
+		int *inside_s_quotes, int *i, int *j)
 {
-	int		size;
-	int		insideQuotes = 0;
-	int		insideSingleQuotes = 0;
-	char	*output;
-	int 	i;
-	int 	j;
-
-	size = count_len(input);
-	insideQuotes = 0;
-	insideSingleQuotes = 0;
-	output = (char*)malloc(size);
-	if (output == NULL)
-    	return (NULL);
-	i = 0;
-	j = 0;
-	while (input[i] != '\0')
+	if (*inside_s_quotes)
 	{
-		if (input[i] == '\"' && !insideSingleQuotes)
+		if (input[*i + 1] != ' ' && input[*i + 1] != '\0')
 		{
-			if (insideQuotes)
-			{
-				if (input[i + 1] != ' ' && input[i + 1] != '\0')
-				{
-					output[j++] = '\"';
-					output[j++] = ' ';
-				}
-				else
-					output[j++] = '\"';
-			}
-			else
-			{
-				if (i > 0 && input[i - 1] != ' ' && output[j - 1] != ' ' && input[i - 1] != '\0' && !insideSingleQuotes)
-					output[j++] = ' ';
-				output[j++] = '\"';
-			}
-			insideQuotes = !insideQuotes;
-		}
-		else if (input[i] == '\'' && !insideQuotes)
-		{
-			if (insideSingleQuotes)
-			{
-				if (input[i + 1] != ' ' && input[i + 1] != '\0')
-				{
-					output[j++] = '\'';
-					output[j++] = ' ';
-				}
-				else
-					output[j++] = '\'';
-			}
-			else
-			{
-				if (i > 0 && input[i - 1] != ' ' && output[j - 1] != ' ' && input[i - 1] != '\0' && !insideQuotes)
-					output[j++] = ' ';
-				output[j++] = '\'';
-			}
-			insideSingleQuotes = !insideSingleQuotes;
+			output[(*j)++] = '\'';
+			output[(*j)++] = ' ';
 		}
 		else
-			output[j++] = input[i];
-		i++;
+			output[(*j)++] = '\'';
 	}
-	output[j] = '\0';
+	else
+	{
+		if (*i > 0 && input[*i - 1] != ' ' && output[*j - 1] != ' '
+			&& !(*inside_d_quotes))
+			output[(*j)++] = ' ';
+		output[(*j)++] = '\'';
+	}
+	*inside_s_quotes = !(*inside_s_quotes);
+}
+
+char	*fix_quotes(char *input)
+{
+	t_index	index;
+	char	*output;
+
+	memset(&index, 0, sizeof(index));
+	index.size = count_len(input);
+	output = (char *)malloc(index.size * 3);
+	if (output == NULL)
+		return (NULL);
+	while (input[index.i] != '\0')
+	{
+		if (input[index.i] == '\"' && !index.inside_s_quotes)
+			d_quotes(input, output, &index.inside_d_quotes,
+				&index.inside_s_quotes, &index.i, &index.j);
+		else if (input[index.i] == '\'' && !index.inside_d_quotes)
+			s_quotes(input, output, &index.inside_d_quotes,
+				&index.inside_s_quotes, &index.i, &index.j);
+		else
+			output[index.j++] = input[index.i];
+		index.i++;
+	}
+	output[index.j] = '\0';
 	return (output);
 }
-

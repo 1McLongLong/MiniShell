@@ -3,29 +3,29 @@
 char	*fix_line(char *str)
 {
 	t_index	index;
-	int		len;
 	int		inquotes;
 	char	*result;
 
-	len = str_len(str);
-	result = malloc(sizeof(char) * (len + 1));
+	memset(&index, 0, sizeof(t_index));
+	index.len = str_len(str);
+	result = malloc(sizeof(char) * (index.len + 1));
 	if (!result)
 		return (NULL);
 	inquotes = 0;
-	memset(&index, 0, sizeof(t_index));
-	while (index.i < len && index.j < len)
+	while (index.i < index.len && index.j < index.len)
 	{
-		if (str[index.i] == '"')
+		if (str[index.i] == '"' || str[index.i] == '\'')
 		{
 			inquotes = !inquotes;
 			result[index.j++] = str[index.i];
 		}
-		else if (!inquotes && (str[index.i] == '|' || (str[index.i] == '>') || (str[index.i] == '<')))
+		else if (!inquotes && ((str[index.i] == '|') || (str[index.i] == '>')
+				|| (str[index.i] == '<')))
 		{
 			if (index.i > 0 && str[index.i - 1] != ' ')
 				result[index.j++] = ' ';
 			result[index.j++] = str[index.i];
-			if (index.i < len - 1 && str[index.i + 1] != ' ')
+			if (index.i < index.len - 1 && str[index.i + 1] != ' ')
 				result[index.j++] = ' ';
 		}
 		else
@@ -65,37 +65,37 @@ void	add_redi_to_list(t_dblst *list, p_dblst *p_list)
 void	lexer(char *line, t_dblst *list)
 {
 	p_dblst	p_list;
-	if (!(fix_input(line))) // || inside quotes is not working
+	char *fixed_line;
+	char *p_line;
+	char	*e_line;
+	char **str;
+
+	if (!(fix_input(line)))
 		return ;
-	char *fixed_line = fix_line(line);
+	fixed_line = fix_line(line);
 	if (!(check_quotes(fixed_line)))
 	{
-		free(fixed_line);
-		return ;
+		// free(fixed_line);
+		return (free(fixed_line));
 	}
-	 // printf("fixed_line: %s\n", fixed_line);
-	char *p_line = fix_quotes(fixed_line);
+	// printf("fixed_line: %s\n", fixed_line);
+	p_line = fix_quotes(fixed_line);
 	// printf("p_line: %s\n", p_line);
 	p_list = tokenize_list(p_line);
 	// print(&p_list);
 	if (check_syntax(&p_list))
-	{
-		free_slist(&p_list);
-		free(p_line);
-		free(fixed_line);
-		return ;
-	}
+		return (free_slist(&p_list), free(p_line), free(fixed_line));
 	expand(&p_list);
 	// print(&p_list);
-	char *e_line = exec_line(&p_list);
+	e_line = exec_line(&p_list);
 	// printf("e_line : %s\n", e_line);
 	remove_quotes(&p_list);
 	redirections(&p_list);
 	// printf("-----------------\n");
 	fix_e_line(fixed_line, e_line);
 	remove_line_quotes(e_line);
-	// printf("fix e_line : %s\n", e_line);
-	char **str = ft_split(e_line, '|');
+	// printf("fix e_ine : %s\n", e_line);
+	str = ft_split(e_line, '|');
 	// int i = 0;
 	// while (str[i])
 	// printf("%s\n",str[i++]);
@@ -109,10 +109,11 @@ void	lexer(char *line, t_dblst *list)
 	// print_list(list);
 
 	//        FREE
-	free_slist(&p_list);
-	ft_free(str);
-	free(p_line);
-	free(fixed_line);
-	free(e_line);
-	return ;
+	// free_slist(&p_list);
+	// ft_free(str);
+	// free(p_line);
+	// free(fixed_line);
+	// free(e_line);
+	return (free_slist(&p_list), ft_free(str), free(p_line),
+		free(fixed_line), free(e_line));
 }

@@ -6,12 +6,11 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 18:19:54 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 15:23:19 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/03 16:56:32 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
 /*
 static int count_words(char const *str, char c)
 {
@@ -32,31 +31,33 @@ static int count_words(char const *str, char c)
 		}
 		str++;
 	}
-	return count;
+	return (count);
 }
 
-static void free_string(char **str, int word_count)
+static void	free_string(char **str, int word_count)
 {
-	int i;
+	int	i;
 
 	i = word_count;
-	while (i) {
+	while (i)
+	{
 		i--;
 		free(str[i]);
 	}
 	free(str);
 }
 
-static char *my_ft_strdup(const char *str, int len)
+static char	*my_ft_strdup(const char *str, int len)
 {
-	int i;
-	char *copy;
+	int	i;
+	char	*copy;
 
 	copy = (char *)malloc(len + 1);
 	if (!copy)
 		return (NULL);
 	i = 0;
-	while (i < len) {
+	while (i < len)
+	{
 		copy[i] = str[i];
 		i++;
 	}
@@ -64,10 +65,10 @@ static char *my_ft_strdup(const char *str, int len)
 	return (copy);
 }
 
-static void fill_result(char **result, char const *s, char c, int word_count)
+static void	fill_result(char **result, char const *s, char c, int word_count)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	i = 0;
 	while (i < word_count)
@@ -75,11 +76,11 @@ static void fill_result(char **result, char const *s, char c, int word_count)
 		while (*s == c)
 			s++;
 		len = 0;
-		if (*s == '"') 
+		if (*s == '"')
 		{
 			s++;
 			len++;
-			while (*s && *s != '"') 
+			while (*s && *s != '"')
 			{
 				len++;
 				s++;
@@ -89,7 +90,7 @@ static void fill_result(char **result, char const *s, char c, int word_count)
 				s++;
 				len++;
 			}
-		} 
+		}
 		else
 		{
 			while (*s && *s != c)
@@ -103,11 +104,11 @@ static void fill_result(char **result, char const *s, char c, int word_count)
 	}
 }
 
-char **ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	int i;
-	int words_count;
-	char **full_str;
+	int		i;
+	int		words_count;
+	char	**full_str;
 
 	if (s == NULL)
 		return (NULL);
@@ -118,8 +119,10 @@ char **ft_split(char const *s, char c)
 	fill_result(full_str, s, c, words_count);
 	full_str[words_count] = NULL;
 	i = 0;
-	while (i < words_count) {
-		if (!full_str[i]) {
+	while (i < words_count)
+	{
+		if (!full_str[i])
+		{
 			free_string(full_str, words_count);
 			return (NULL);
 		}
@@ -128,6 +131,7 @@ char **ft_split(char const *s, char c)
 	return (full_str);
 }
 */
+
 
 static int	count_words(char const *str, char c)
 {

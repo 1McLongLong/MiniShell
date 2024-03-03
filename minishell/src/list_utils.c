@@ -20,7 +20,9 @@ t_node	*create_node(char *data)
 	if (new_node == NULL)
 		return (NULL);
 	new_node->arg = ft_split(data, ' ');
-	new_node->cmd = strdup(new_node->arg[0]);
+	new_node->cmd = NULL;
+	if (new_node->arg[0])
+		new_node->cmd = strdup(new_node->arg[0]);
 	new_node->fd_in = 0;
 	new_node->fd_out = 1;
 	new_node->prev = NULL;

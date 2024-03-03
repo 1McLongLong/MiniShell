@@ -34,6 +34,9 @@ typedef struct indexes
 	int		len;
 	int		end;
 	int		fd;
+	int		size;
+	int		inside_d_quotes;
+	int		inside_s_quotes;
 	char	*result;
 	char	*expand;
 	char	*temp;
@@ -76,7 +79,6 @@ typedef struct d_node
 	t_node	*head;
 	t_node	*tail;
 }	t_dblst;
-
 
 int		ft_isalnum(int c);
 int		ft_printf(const char *format, ...);
@@ -121,6 +123,7 @@ void	lexer(char *line, t_dblst *list);
 void	epur_str(char *str);
 int		str_len(char *str);
 int		get_len(char *str);
+int		count_len(char *input);
 void	fix_it_again(char *str);
 char	*fix_quotes(char *input);
 
