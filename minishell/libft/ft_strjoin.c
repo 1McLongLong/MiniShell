@@ -39,9 +39,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s1)
-		return (s2);
+		return (ft_strdup(s2));
 	if (!s2)
-		return (s1);
+		return (ft_strdup(s1));
 	t_len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	str = (char *)malloc(t_len * sizeof(char));
 	if (!str)

@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   token_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/04 18:19:54 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/04 14:56:31 by touahman         ###   ########.fr       */
+/*   Created: 2024/03/01 22:16:19 by touahman          #+#    #+#             */
+/*   Updated: 2024/03/01 22:16:20 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "header.h"
 
-static int	count_words(char const *str, char c)
+static int	count_words(const char *str, char c)
 {
-	int	word_flag;
-	int	count;
+	int		count;
+	int		i;
+	int		len;
+	int		inside_quotes;
+	char	last_c;
 
 	count = 0;
-	word_flag = 0;
-	while (*str)
+	i = 0;
+	inside_quotes = 0;
+	len = ft_strlen(str);
+	if (len > 0)
+		last_c = str[0];
+	while (i <= len)
 	{
-		if (*str == c)
-			word_flag = 0;
-		else if (word_flag == 0)
-		{
-			word_flag = 1;
+		if (str[i] == '\"')
+			inside_quotes = !inside_quotes;
+		if (!inside_quotes && (str[i] == c || str[i] == '\0') && last_c != c)
 			count++;
-		}
-		str++;
+		last_c = str[i];
+		i++;
 	}
 	return (count);
 }
@@ -66,24 +71,30 @@ static char	*my_ft_strdup(const char *str, int len)
 
 static void	fill_result(char **result, char const *s, char c, int word_count)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
+	int		in_quotes;
 
 	i = 0;
+	in_quotes = 0;
 	while (i < word_count)
 	{
 		while (*s == c)
 			s++;
 		len = 0;
-		while (s[len] && s[len] != c)
+		while (s[len] && (in_quotes || s[len] != c))
+		{
+			if (s[len] == '\"')
+				in_quotes = !in_quotes;
 			len++;
+		}
 		result[i] = my_ft_strdup(s, len);
 		s += len;
 		i++;
 	}
 }
 
-char	**ft_split(char const *s, char c)
+char	**token_split(char const *s, char c)
 {
 	int		i;
 	int		words_count;

@@ -6,14 +6,14 @@
 #    By: touahman <touahman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/25 17:41:23 by touahman          #+#    #+#              #
-#    Updated: 2024/03/03 19:18:24 by touahman         ###   ########.fr        #
+#    Updated: 2024/03/04 19:13:01 by touahman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc 
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 
-SRCF = $(addprefix src/, main.c list_utils.c helper.c helper2.c handle_spaces.c lexer.c tokenizer.c tokenizer2.c syntax.c expand.c expand2.c fix_quotes.c fix_quotes2.c \
+SRCF = $(addprefix parsing/, main.c list_utils.c helper.c helper2.c handle_spaces.c lexer.c tokenizer.c tokenizer2.c syntax.c expand.c expand2.c fix_quotes.c fix_quotes2.c \
 			 token_utils.c remove_quotes.c redirect.c expand_redirect.c token_split.c exec_line.c heredoc.c)
 GNL_SRCF = $(addprefix gnl/, get_next_line.c get_next_line_utils.c)
 PRINTF_SRCF = $(addprefix printf/, ft_printf.c ft_putchar.c ft_putstr.c ft_putnbr.c ft_put_hex.c \
@@ -28,16 +28,19 @@ GNL_OBJF = $(GNL_SRCF:.c=.o)
 PRINTF_OBJF = $(PRINTF_SRCF:.c=.o)
 LIBFT_OBJF = $(LIBFT_SRCF:.c=.o)
 
+READLINE_INC = -I $(shell brew --prefix readline)/include
+READLINE_LIB = -L $(shell brew --prefix readline)/lib -lreadline
+
 NAME = minishell
 
 all : $(NAME)
 
 $(NAME): $(OBJF) $(LIBFT_OBJF) $(GNL_OBJF) $(PRINTF_OBJF)
-	@$(CC) $(CFLAGS) -lreadline $^ -o $@
+	@$(CC) $(CFLAGS)  $^ -o $@ $(READLINE_LIB)
 	@echo "🚀 Mission is complete!"
 
-%.o : %.c ./src/header.h ./printf/ft_printf.h ./gnl/get_next_line.h ./libft/libft.h
-	@$(CC) $(CFLAGS) -c $< -o $@
+%.o : %.c ./parsing/header.h ./printf/ft_printf.h ./gnl/get_next_line.h ./libft/libft.h
+	@$(CC) $(CFLAGS) $(READLINE_INC) -c $< -o $@ 
 
 clean:
 	@rm -f $(OBJF) $(GNL_OBJF) $(PRINTF_OBJF) $(LIBFT_OBJF)
