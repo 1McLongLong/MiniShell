@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 16:58:39 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 16:58:44 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:43:30 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	fix_it_again(char *str)
 {
 	t_index	index;
 
-	memset(&index, 0, sizeof(index));
+	ft_memset(&index, 0, sizeof(index));
 	while (str[index.i])
 	{
 		if (str[index.i] == '>' && str[index.i + 1] == ' '

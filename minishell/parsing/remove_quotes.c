@@ -6,13 +6,13 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 13:48:19 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 20:10:25 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:44:24 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	delete_node_from_list(p_dblst **list, x_node *node)
+void	delete_node_from_list(t_plist **list, t_pnode *node)
 {
 	if (node == NULL || *list == NULL || (*list)->head == NULL)
 		return ;
@@ -26,10 +26,10 @@ void	delete_node_from_list(p_dblst **list, x_node *node)
 	free(node);
 }
 
-void	delete_node(p_dblst **list)
+void	delete_node(t_plist **list)
 {
-	x_node	*current;
-	x_node	*next;
+	t_pnode	*current;
+	t_pnode	*next;
 
 	current = (*list)->head;
 	while (current != NULL)
@@ -43,9 +43,9 @@ void	delete_node(p_dblst **list)
 	}
 }
 
-void	remove_quotes(p_dblst *p_list)
+void	remove_quotes(t_plist *p_list)
 {
-	x_node	*head;
+	t_pnode	*head;
 	char	*temp;
 
 	if (p_list == NULL || p_list->head == NULL)
@@ -72,7 +72,7 @@ void	remove_line_quotes(char *str)
 
 	inside_dquotes = 0;
 	inside_s_quotes = 0;
-	memset(&index, 0, sizeof(index));
+	ft_memset(&index, 0, sizeof(index));
 	while (str[index.i])
 	{
 		if (str[index.i] == '\"' && !inside_s_quotes)

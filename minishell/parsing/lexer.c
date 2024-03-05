@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:44:58 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/05 16:24:36 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:43:46 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*fix_line(char *str)
 	t_index	index;
 	char	*result;
 
-	memset(&index, 0, sizeof(t_index));
+	ft_memset(&index, 0, sizeof(t_index));
 	index.len = str_len(str);
 	result = malloc(sizeof(char) * (index.len + 1));
 	if (!result)
@@ -53,10 +53,10 @@ char	*fix_line(char *str)
 	return (result);
 }
 
-void	add_redi_to_list(t_dblst *list, p_dblst *p_list)
+void	add_redi_to_list(t_dblst *list, t_plist *p_list)
 {
 	t_node	*e_temp;
-	x_node	*p_temp;
+	t_pnode	*p_temp;
 
 	e_temp = list->head;
 	p_temp = p_list->head;
@@ -80,7 +80,7 @@ void	add_redi_to_list(t_dblst *list, p_dblst *p_list)
 
 void	lexer(char *line, t_dblst *list)
 {
-	p_dblst	p_list;
+	t_plist	p_list;
 	char	*fixed_line;
 	char	*p_line;
 	char	*e_line;

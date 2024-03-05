@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 15:11:12 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/03 15:11:14 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:43:09 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	count_len(char *input)
 {
 	t_index	index;
 
-	memset(&index, 0, sizeof(index));
+	ft_memset(&index, 0, sizeof(index));
 	while (input[index.i] != '\0')
 	{
 		if (input[index.i] == '\"' && !index.inside_s_quotes)

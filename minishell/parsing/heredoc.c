@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 18:04:25 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/04 15:04:34 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:30:38 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static int	delim_quotes(char *delim)
 	return (1);
 }
 
-void	heredoc(x_node *list)
+void	heredoc(t_pnode *list)
 {
-	x_node	*temp;
+	t_pnode	*temp;
 	t_index	index;
 
 	index.temp_file = "/tmp/heredoc_tempfile";
@@ -36,7 +36,7 @@ void	heredoc(x_node *list)
 	index.delimiter = temp->next->str;
 	index.fd = open(index.temp_file, O_CREAT | O_RDWR | O_TRUNC, S_IWUSR);
 	if (index.fd == -1)
-		perror("open");
+		perror("ERROR");
 	while (1)
 	{
 		index.buffer = readline("> ");

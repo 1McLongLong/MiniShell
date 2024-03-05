@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 12:13:54 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/05 12:48:51 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:42:44 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	redi_quotes(char **str, char *env)
 	char	*substring_before;
 	char	*substring_after;
 
-	memset(&index, 0, sizeof(index));
+	ft_memset(&index, 0, sizeof(index));
 	index.expand = getenv(env);
 	while ((*str)[index.i] != '$' && (*str)[index.i])
 		index.i++;

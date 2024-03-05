@@ -6,15 +6,15 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 19:29:55 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 19:29:56 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:31:04 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	check_opened_fd(p_dblst *list, x_node *last_fnode, int flag)
+void	check_opened_fd(t_plist *list, t_pnode *last_fnode, int flag)
 {
-	x_node	*temp;
+	t_pnode	*temp;
 
 	temp = list->head;
 	while (temp != last_fnode)
@@ -37,57 +37,66 @@ void	check_opened_fd(p_dblst *list, x_node *last_fnode, int flag)
 	}
 }
 
-void	redirect_output(p_dblst *list, x_node *temp)
+int	redirect_output(t_plist *list, t_pnode *temp)
 {
 	int	fd;
 
 	check_opened_fd(list, temp, 1);
 	fd = open(temp->next->str, O_CREAT | O_RDWR);
 	if (fd == -1)
-		perror("ERROR");
+		return (perror("ERROR"), -1);
 	temp->next->fd_out = fd;
+	return (0);
 }
 
-void	redirect_input(p_dblst *list, x_node *temp)
+int	redirect_input(t_plist *list, t_pnode *temp)
 {
 	int	fd;
 
 	check_opened_fd(list, temp, 0);
-	fd = open(temp->next->str, O_CREAT | O_RDONLY);
+	fd = open(temp->next->str, O_RDONLY);
 	if (fd == -1)
-		perror("ERROR");
+		return (perror("ERROR"), -1);
 	temp->next->fd_in = fd;
+	return (0);
 }
 
-void	redirect_append(p_dblst *list, x_node *temp)
+int	redirect_append(t_plist *list, t_pnode *temp)
 {
 	int	fd;
 
 	check_opened_fd(list, temp, 1);
 	fd = open(temp->next->str, O_CREAT | O_RDWR | O_TRUNC);
 	if (fd == -1)
-		perror("ERROR");
+		return (perror("ERROR"), -1);
 	temp->next->fd_out = fd;
+	return (0);
 }
 
-void	redirections(p_dblst *list)
+void	redirections(t_plist *list)
 {
-	x_node	*temp;
+	t_pnode	*temp;
+	int		i;
 
 	temp = list->head;
 	while (temp)
 	{
+		i = 0;
 		if (strcmp(temp->str, ">") == 0 && temp->next)
-			redirect_output(list, temp);
+			i = redirect_output(list, temp);
 		else if (strcmp(temp->str, "<") == 0 && temp->next)
-			redirect_input(list, temp);
+			i = redirect_input(list, temp);
 		else if (strcmp(temp->str, ">>") == 0 && temp->next)
-			redirect_append(list, temp);
+			i = redirect_append(list, temp);
 		else if (strcmp(temp->str, "<<") == 0 && temp->next)
 		{
 			check_opened_fd(list, temp, 0);
 			heredoc(temp);
 		}
-		temp = temp->next;
+		if (i == -1)
+			while (temp && strcmp(temp->str, "|"))
+				temp = temp->next;
+		else
+			temp = temp->next;
 	}
 }

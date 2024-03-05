@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:55:53 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/04 14:55:54 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:43:02 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*fix_quotes(char *input)
 	char	*output;
 	int		size;
 
-	memset(&state, 0, sizeof(state));
+	ft_memset(&state, 0, sizeof(state));
 	size = count_len(input);
 	output = (char *)malloc(size);
 	if (output == NULL)

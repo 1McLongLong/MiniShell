@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 12:45:54 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 14:32:40 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:30:03 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ char	*find_dollar(char *str)
 	return (substring);
 }
 
-void	expand(p_dblst *p_list)
+void	expand(t_plist *p_list)
 {
 	char	*str;
-	x_node	*temp;
+	t_pnode	*temp;
 
 	temp = p_list->head;
 	while (temp)

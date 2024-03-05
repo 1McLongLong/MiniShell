@@ -6,13 +6,13 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 14:37:38 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/04 10:12:27 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:42:07 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	process_double_quotes(x_node *p_list, char *env, t_index *var)
+void	process_double_quotes(t_pnode *p_list, char *env, t_index *var)
 {
 	var->expand = getenv(env);
 	while (p_list->str[var->i] != '$')
@@ -35,7 +35,7 @@ void	process_double_quotes(x_node *p_list, char *env, t_index *var)
 	free(var->temp2);
 }
 
-void	process_single_quotes(x_node *p_list, t_index *var)
+void	process_single_quotes(t_pnode *p_list, t_index *var)
 {
 	while (p_list->str[var->i])
 		var->i++;
@@ -45,7 +45,7 @@ void	process_single_quotes(x_node *p_list, t_index *var)
 	free(var->temp);
 }
 
-void	process_no_quotes(x_node *p_list, char *env, t_index *var)
+void	process_no_quotes(t_pnode *p_list, char *env, t_index *var)
 {
 	var->expand = getenv(env);
 	var->temp = NULL;
@@ -71,11 +71,11 @@ void	process_no_quotes(x_node *p_list, char *env, t_index *var)
 	free(var->temp2);
 }
 
-void	quotes(x_node *p_list, char *env)
+void	quotes(t_pnode *p_list, char *env)
 {
 	t_index	var;
 
-	memset(&var, 0, sizeof(var));
+	ft_memset(&var, 0, sizeof(var));
 	while (p_list->str[var.i])
 	{
 		if (p_list->str[0] == '"')

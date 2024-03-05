@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 15:10:52 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/05 16:22:33 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:29:47 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	check_quotes(char *input)
 	return (1);
 }
 
-static int	has_invalid_sequence(x_node *node)
+static int	has_invalid_sequence(t_pnode *node)
 {
 	if ((node->type == REDIN && node->next && node->next->type == PIPE)
 		|| (node->type == REDOUT && node->next && node->next->type == PIPE)
@@ -90,7 +90,7 @@ static int	has_invalid_sequence(x_node *node)
 	return (0);
 }
 
-static int	has_unexpected_token(x_node *node)
+static int	has_unexpected_token(t_pnode *node)
 {
 	if (strcmp(node->str, "|") == 0 || strcmp(node->str, ">>") == 0
 		|| strcmp(node->str, "<<") == 0 || strcmp(node->str, ">") == 0
@@ -102,9 +102,9 @@ static int	has_unexpected_token(x_node *node)
 	return (0);
 }
 
-int	check_syntax(p_dblst *list)
+int	check_syntax(t_plist *list)
 {
-	x_node	*head;
+	t_pnode	*head;
 
 	head = list->head;
 	if (strcmp(head->str, "|") == 0 && head->next->type == STRING)

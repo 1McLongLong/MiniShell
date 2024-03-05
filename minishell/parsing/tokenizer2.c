@@ -6,13 +6,13 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 18:27:45 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 18:27:49 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:34:06 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-void	mark_pipes(x_node *head)
+void	mark_pipes(t_pnode *head)
 {
 	while (head)
 	{
@@ -27,7 +27,7 @@ void	mark_pipes(x_node *head)
 	}
 }
 
-void	mark_redirection_input(x_node *head)
+void	mark_redirection_input(t_pnode *head)
 {
 	while (head)
 	{
@@ -42,7 +42,7 @@ void	mark_redirection_input(x_node *head)
 	}
 }
 
-void	mark_redirection_output(x_node *head)
+void	mark_redirection_output(t_pnode *head)
 {
 	while (head)
 	{
@@ -64,7 +64,7 @@ void	mark_redirection_output(x_node *head)
 	}
 }
 
-void	mark_heredoc(x_node *head)
+void	mark_heredoc(t_pnode *head)
 {
 	while (head)
 	{
@@ -79,7 +79,7 @@ void	mark_heredoc(x_node *head)
 	}
 }
 
-void	mark_arguments(x_node *head)
+void	mark_arguments(t_pnode *head)
 {
 	while (head)
 	{

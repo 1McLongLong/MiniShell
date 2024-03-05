@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 12:47:03 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/05 15:44:28 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:43:22 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	remove_extra_spaces(char *str)
 {
 	t_index	var;
 
-	memset(&var, 0, sizeof(var));
+	ft_memset(&var, 0, sizeof(var));
 	while (str[var.i])
 	{
 		if (str[var.i] == '"')

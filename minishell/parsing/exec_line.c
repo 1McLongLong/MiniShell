@@ -6,24 +6,24 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 12:07:10 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 12:07:11 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:42:28 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-char	*exec_line(p_dblst *list)
+char	*exec_line(t_plist *list)
 {
-	x_node	*head;
+	t_pnode	*head;
 	t_index	index;
 
-	memset(&index, 0, sizeof(index));
+	ft_memset(&index, 0, sizeof(index));
 	if (list->head == NULL)
 		return (NULL);
 	head = list->head;
 	while (head != NULL)
 	{
-		index.len += strlen(head->str) + 1;
+		index.len += ft_strlen(head->str) + 1;
 		head = head->next;
 	}
 	index.result = (char *)malloc(index.len + 1);
@@ -33,7 +33,7 @@ char	*exec_line(p_dblst *list)
 	while (head != NULL)
 	{
 		strcpy(index.result + index.i, head->str);
-		index.i += strlen(head->str);
+		index.i += ft_strlen(head->str);
 		index.result[index.i++] = ' ';
 		head = head->next;
 	}

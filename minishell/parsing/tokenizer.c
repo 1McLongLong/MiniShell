@@ -6,15 +6,15 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 18:28:04 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 18:28:22 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:33:57 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-static void	tokenize_my_list(p_dblst *list)
+static void	tokenize_my_list(t_plist *list)
 {
-	x_node	*head;
+	t_pnode	*head;
 
 	head = list->head;
 	mark_pipes(head);
@@ -24,9 +24,9 @@ static void	tokenize_my_list(p_dblst *list)
 	mark_arguments(head);
 }
 
-p_dblst	tokenize_list(char *str)
+t_plist	tokenize_list(char *str)
 {
-	p_dblst	list;
+	t_plist	list;
 
 	list.head = NULL;
 	list.tail = NULL;

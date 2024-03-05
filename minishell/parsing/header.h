@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:46:56 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/05 12:47:59 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:40:57 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,13 @@ typedef struct s_node
 	int				fd_out;
 	struct s_node	*prev;
 	struct s_node	*next;
-}	x_node;
+}	t_pnode;
 
 typedef struct q_node
 {
-	x_node	*head;
-	x_node	*tail;
-}	p_dblst;
+	t_pnode	*head;
+	t_pnode	*tail;
+}	t_plist;
 
 typedef struct node
 {
@@ -111,32 +111,32 @@ char	*ft_strjoin(char *s1, char *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s1);
 int		ft_isalpha(int c);
+void	*ft_memset(void *b, int c, size_t len);
 
 t_node	*create_node(char *data);
 void	add_to_list(t_dblst *list, char *data);
 void	add_list(char **str, t_dblst *list);
 void	print_list(t_dblst *list);
 void	free_list(t_dblst *list);
-x_node	*create_snode(char *data);
-void	add_to_slist(p_dblst *list, char *data);
-void	add_slist(char *str, p_dblst *list);
+t_pnode	*create_snode(char *data);
+void	add_to_slist(t_plist *list, char *data);
+void	add_slist(char *str, t_plist *list);
 char	**token_split(char const *s, char c);
-void	free_slist(p_dblst *list);
-void	print(p_dblst *list);
-void	remove_quotes(p_dblst *p_list);
-void	redirections(p_dblst *list);
+void	free_slist(t_plist *list);
+void	print(t_plist *list);
+void	remove_quotes(t_plist *p_list);
+void	redirections(t_plist *list);
 void	expand_redir(char **str);
 int		fix_input(char *line);
 int		check_quotes(char *input);
-int		check_syntax(p_dblst *list);
-void	quotes(x_node *p_list, char *env);
+int		check_syntax(t_plist *list);
+void	quotes(t_pnode *p_list, char *env);
 
 void	add_spaces_back(t_dblst *list);
 void	remove_spaces(char *str);
 
-void	heredoc(x_node *list);
-void	expand(p_dblst *p_list);
-p_dblst	tokenize_list(char *str);
+void	heredoc(t_pnode *list);
+void	expand(t_plist *p_list);
 void	lexer(char *line, t_dblst *list);
 void	epur_str(char *str);
 int		str_len(char *str);
@@ -144,15 +144,16 @@ int		get_len(char *str);
 int		count_len(char *input);
 void	fix_it_again(char *str);
 char	*fix_quotes(char *input);
+t_plist	tokenize_list(char *str);
 
-char	*exec_line(p_dblst *list);
+char	*exec_line(t_plist *list);
 void	fix_e_line(char *f_line, char *e_line);
 void	remove_line_quotes(char *str);
 // TOKENIZER
-void	mark_arguments(x_node *head);
-void	mark_heredoc(x_node *head);
-void	mark_redirection_output(x_node *head);
-void	mark_redirection_input(x_node *head);
-void	mark_pipes(x_node *head);
+void	mark_arguments(t_pnode *head);
+void	mark_heredoc(t_pnode *head);
+void	mark_redirection_output(t_pnode *head);
+void	mark_redirection_input(t_pnode *head);
+void	mark_pipes(t_pnode *head);
 
 #endif

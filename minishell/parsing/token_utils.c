@@ -6,17 +6,17 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 13:46:17 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/05 12:45:33 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:31:27 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-x_node	*create_snode(char *data)
+t_pnode	*create_snode(char *data)
 {
-	x_node	*new_node;
+	t_pnode	*new_node;
 
-	new_node = malloc(sizeof(x_node));
+	new_node = malloc(sizeof(t_pnode));
 	if (new_node == NULL)
 		return (NULL);
 	new_node->fd_in = 0;
@@ -28,9 +28,9 @@ x_node	*create_snode(char *data)
 	return (new_node);
 }
 
-void	add_to_slist(p_dblst *list, char *data)
+void	add_to_slist(t_plist *list, char *data)
 {
-	x_node	*new_node;
+	t_pnode	*new_node;
 
 	new_node = create_snode(data);
 	if (list->head == NULL)
@@ -46,10 +46,10 @@ void	add_to_slist(p_dblst *list, char *data)
 	}
 }
 
-void	free_slist(p_dblst *list)
+void	free_slist(t_plist *list)
 {
-	x_node	*current;
-	x_node	*next;
+	t_pnode	*current;
+	t_pnode	*next;
 
 	current = list->head;
 	while (current != NULL)
@@ -63,7 +63,7 @@ void	free_slist(p_dblst *list)
 	list->tail = NULL;
 }
 
-void	add_slist(char *str, p_dblst *list)
+void	add_slist(char *str, t_plist *list)
 {
 	char	**split;
 	int		i;

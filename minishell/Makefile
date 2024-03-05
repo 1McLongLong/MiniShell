@@ -6,15 +6,18 @@
 #    By: touahman <touahman@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/25 17:41:23 by touahman          #+#    #+#              #
-#    Updated: 2024/03/04 19:13:01 by touahman         ###   ########.fr        #
+#    Updated: 2024/03/05 20:53:37 by touahman         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc 
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
-SRCF = $(addprefix parsing/, main.c list_utils.c helper.c helper2.c handle_spaces.c lexer.c tokenizer.c tokenizer2.c syntax.c expand.c expand2.c fix_quotes.c fix_quotes2.c \
-			 token_utils.c remove_quotes.c redirect.c expand_redirect.c token_split.c exec_line.c heredoc.c)
+# SRCF = $(addprefix parsing/, main.c list_utils.c helper.c helper2.c handle_spaces.c lexer.c tokenizer.c tokenizer2.c syntax.c expand.c expand2.c fix_quotes.c fix_quotes2.c \
+# 			 token_utils.c remove_quotes.c redirect.c expand_redirect.c token_split.c exec_line.c heredoc.c)
+SRCF = ./parsing/main.c ./parsing/list_utils.c ./parsing/helper.c ./parsing/helper2.c ./parsing/handle_spaces.c ./parsing/lexer.c ./parsing/tokenizer.c ./parsing/tokenizer2.c \
+		./parsing/syntax.c ./parsing/expand.c ./parsing/expand2.c ./parsing/fix_quotes.c ./parsing/fix_quotes2.c ./parsing/token_utils.c ./parsing/remove_quotes.c \
+		./parsing/redirect.c ./parsing/expand_redirect.c ./parsing/token_split.c ./parsing/exec_line.c ./parsing/heredoc.c
 GNL_SRCF = $(addprefix gnl/, get_next_line.c get_next_line_utils.c)
 PRINTF_SRCF = $(addprefix printf/, ft_printf.c ft_putchar.c ft_putstr.c ft_putnbr.c ft_put_hex.c \
 							ft_put_bighex.c ft_putnbr_u.c ft_print_add.c)
