@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 13:47:56 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 19:33:09 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:46:32 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_node	*create_node(char *data)
 	new_node->arg = ft_split(data, ' ');
 	new_node->cmd = NULL;
 	if (new_node->arg[0])
-		new_node->cmd = strdup(new_node->arg[0]);
+		new_node->cmd = ft_strdup(new_node->arg[0]);
 	new_node->fd_in = 0;
 	new_node->fd_out = 1;
 	new_node->prev = NULL;
@@ -65,6 +65,7 @@ void	free_list(t_dblst *list)
 	list->head = NULL;
 	list->tail = NULL;
 }
+
 
 void	print_list(t_dblst *list)
 {

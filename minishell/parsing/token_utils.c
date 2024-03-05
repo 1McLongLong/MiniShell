@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 13:46:17 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/02 19:07:59 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:45:33 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ x_node	*create_snode(char *data)
 	new_node->fd_in = 0;
 	new_node->fd_out = 1;
 	new_node->type = 0;
-	new_node->str = strdup(data);
+	new_node->str = ft_strdup(data);
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);
@@ -77,19 +77,3 @@ void	add_slist(char *str, p_dblst *list)
 	}
 	ft_free(split);
 }
-
-void	print(p_dblst *list)
-{
-	x_node	*temp;
-
-	temp = list->head;
-	// int i;
-	while (temp)
-	{
- 		printf("%s ---------- %d\n", temp->str, temp->type);
- 		// printf("%s ---------- in = %d | out = %d\n", temp->str, temp->fd_in, temp->fd_out);
-		// printf("%s\n", temp->str);
-		temp = temp->next; 
-	}
-}
-

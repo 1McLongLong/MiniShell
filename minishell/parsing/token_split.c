@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 22:16:19 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/01 22:16:20 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 16:23:26 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,26 @@
 
 static int	count_words(const char *str, char c)
 {
-	int		count;
 	int		i;
-	int		len;
+	int		count;
 	int		inside_quotes;
 	char	last_c;
 
 	count = 0;
-	i = 0;
 	inside_quotes = 0;
-	len = ft_strlen(str);
-	if (len > 0)
-		last_c = str[0];
-	while (i <= len)
+	last_c = '\0';
+	i = 0;
+	while (str[i] != '\0')
 	{
-		if (str[i] == '\"')
+		if (str[i] == '\"' || str[i] == '\'')
 			inside_quotes = !inside_quotes;
-		if (!inside_quotes && (str[i] == c || str[i] == '\0') && last_c != c)
+		if (!inside_quotes && str[i] == c && last_c != c)
 			count++;
 		last_c = str[i];
 		i++;
 	}
+	if (last_c != c)
+		count++;
 	return (count);
 }
 

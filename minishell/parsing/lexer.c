@@ -1,9 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/05 12:44:58 by touahman          #+#    #+#             */
+/*   Updated: 2024/03/05 16:24:36 by touahman         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "header.h"
+
+static void	add_spaces(char *str, char *result, t_index *index)
+{
+	if (!index->inquotes && ((str[index->i] == '|')
+			|| (str[index->i] == '>') || (str[index->i] == '<')))
+	{
+		if (index->i > 0 && str[index->i - 1] != ' ')
+			result[index->j++] = ' ';
+		result[index->j++] = str[index->i];
+		if (index->i < index->len - 1 && str[index->i + 1] != ' ')
+			result[index->j++] = ' ';
+	}
+	else
+		result[index->j++] = str[index->i];
+}
 
 char	*fix_line(char *str)
 {
 	t_index	index;
-	int		inquotes;
 	char	*result;
 
 	memset(&index, 0, sizeof(t_index));
@@ -11,25 +37,15 @@ char	*fix_line(char *str)
 	result = malloc(sizeof(char) * (index.len + 1));
 	if (!result)
 		return (NULL);
-	inquotes = 0;
 	while (index.i < index.len && index.j < index.len)
 	{
 		if (str[index.i] == '"' || str[index.i] == '\'')
 		{
-			inquotes = !inquotes;
+			index.inquotes = !index.inquotes;
 			result[index.j++] = str[index.i];
-		}
-		else if (!inquotes && ((str[index.i] == '|') || (str[index.i] == '>')
-				|| (str[index.i] == '<')))
-		{
-			if (index.i > 0 && str[index.i - 1] != ' ')
-				result[index.j++] = ' ';
-			result[index.j++] = str[index.i];
-			if (index.i < index.len - 1 && str[index.i + 1] != ' ')
-				result[index.j++] = ' ';
 		}
 		else
-			result[index.j++] = str[index.i];
+			add_spaces(str, result, &index);
 		index.i++;
 	}
 	result[index.j] = '\0';
@@ -65,18 +81,16 @@ void	add_redi_to_list(t_dblst *list, p_dblst *p_list)
 void	lexer(char *line, t_dblst *list)
 {
 	p_dblst	p_list;
-	char *fixed_line;
-	char *p_line;
+	char	*fixed_line;
+	char	*p_line;
 	char	*e_line;
-	char **str;
+	char	**str;
 
 	if (!(fix_input(line)))
 		return ;
 	fixed_line = fix_line(line);
 	if (!(check_quotes(fixed_line)))
-	{
 		return (free(fixed_line));
-	}
 	// printf("fixed_line: %s\n", fixed_line);
 	p_line = fix_quotes(fixed_line);
 	// printf("p_line: %s\n", p_line);
@@ -103,12 +117,6 @@ void	lexer(char *line, t_dblst *list)
 	add_redi_to_list(list, &p_list);
 	// print_list(list);
 
-	//        FREE
-	// free_slist(&p_list);
-	// ft_free(str);
-	// free(p_line);
-	// free(fixed_line);
-	// free(e_line);
 	return (free_slist(&p_list), ft_free(str), free(p_line),
 		free(fixed_line), free(e_line));
 }

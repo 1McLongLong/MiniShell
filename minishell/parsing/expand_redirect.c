@@ -6,7 +6,7 @@
 /*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 12:13:54 by touahman          #+#    #+#             */
-/*   Updated: 2024/03/04 15:05:00 by touahman         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:48:51 by touahman         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,38 +41,12 @@ static char	*find_dollar(char *str)
 	return (substring);
 }
 
-// static void	redi_quotes(char **str, char *env)
-// {
-// 	t_index	index;
-//
-// 	index.i = 0;
-// 	index.j = 0;
-// 	index.expand = getenv(env);
-// 	index.temp = NULL;
-// 	if ((*str)[0] != '$')
-// 	{
-// 		while ((*str)[index.i] != '$')
-// 			index.i++;
-// 		index.temp = ft_substr(*str, 0, index.i);
-// 	}
-// 	while ((*str)[index.j])
-// 		index.j++;
-// 	index.end = index.j;
-// 	while (!(ft_isalpha((*str)[index.j])) && (*str)[index.j] != '_')
-// 		index.j--;
-// 	index.j++;
-// 	index.temp2 = ft_substr(*str, index.j, index.end - index.j);
-// 	*str = ft_strjoin(index.temp, index.expand);
-// 	index.l_temp = *str;
-// 	*str = ft_strjoin(index.l_temp, index.temp2);
-// }
-
 static void	redi_quotes(char **str, char *env)
 {
 	t_index	index;
-	char		*new_str;
-	char		*substring_before;
-	char		*substring_after;
+	char	*new_str;
+	char	*substring_before;
+	char	*substring_after;
 
 	memset(&index, 0, sizeof(index));
 	index.expand = getenv(env);
@@ -80,9 +54,10 @@ static void	redi_quotes(char **str, char *env)
 		index.i++;
 	substring_before = ft_substr(*str, 0, index.i);
 	index.j = index.i + ft_strlen(env) + 1;
-	while ((*str)[index.j] && (ft_isalnum((*str)[index.j]) || (*str)[index.j] == '_'))
+	while ((*str)[index.j] &&
+			(ft_isalnum((*str)[index.j]) || (*str)[index.j] == '_'))
 		index.j++;
-	substring_after = strdup(&(*str)[index.j]);
+	substring_after = ft_strdup(&(*str)[index.j]);
 	index.temp = ft_strjoin(substring_before, index.expand);
 	new_str = ft_strjoin(index.temp, substring_after);
 	free(*str);

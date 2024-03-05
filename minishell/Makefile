@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC = cc 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 SRCF = $(addprefix parsing/, main.c list_utils.c helper.c helper2.c handle_spaces.c lexer.c tokenizer.c tokenizer2.c syntax.c expand.c expand2.c fix_quotes.c fix_quotes2.c \
 			 token_utils.c remove_quotes.c redirect.c expand_redirect.c token_split.c exec_line.c heredoc.c)

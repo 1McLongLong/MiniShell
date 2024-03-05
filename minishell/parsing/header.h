@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   header.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: touahman <touahman@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/05 12:46:56 by touahman          #+#    #+#             */
+/*   Updated: 2024/03/05 12:47:59 by touahman         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef HEADER_H
 # define HEADER_H
 
@@ -13,7 +25,7 @@
 typedef enum e_token_type
 {
 	COMMAND,
-	ARG, 
+	ARG,
 	STRING,
 	PIPE,
 	REDIN,
@@ -33,6 +45,7 @@ typedef struct indexes
 	int		end;
 	int		fd;
 	int		size;
+	int		inquotes;
 	int		inside_d_quotes;
 	int		inside_s_quotes;
 	char	*result;
@@ -52,7 +65,6 @@ typedef struct state
 	int	i;
 	int	j;
 }	t_state;
-
 
 typedef struct s_node
 {
@@ -80,7 +92,6 @@ typedef struct node
 	struct node	*next;
 }				t_node;
 
-
 typedef struct d_node
 {
 	t_node	*head;
@@ -98,6 +109,7 @@ size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, char *src, size_t dstsize);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strdup(const char *s1);
 int		ft_isalpha(int c);
 
 t_node	*create_node(char *data);
@@ -119,7 +131,6 @@ int		check_quotes(char *input);
 int		check_syntax(p_dblst *list);
 void	quotes(x_node *p_list, char *env);
 
-void	remove_spaces_inq(char **str);
 void	add_spaces_back(t_dblst *list);
 void	remove_spaces(char *str);
 
@@ -134,7 +145,6 @@ int		count_len(char *input);
 void	fix_it_again(char *str);
 char	*fix_quotes(char *input);
 
-
 char	*exec_line(p_dblst *list);
 void	fix_e_line(char *f_line, char *e_line);
 void	remove_line_quotes(char *str);
@@ -144,6 +154,5 @@ void	mark_heredoc(x_node *head);
 void	mark_redirection_output(x_node *head);
 void	mark_redirection_input(x_node *head);
 void	mark_pipes(x_node *head);
-
 
 #endif

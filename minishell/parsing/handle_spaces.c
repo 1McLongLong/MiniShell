@@ -12,31 +12,6 @@
 
 #include "header.h"
 
-void	remove_spaces_inq(char **str)
-{
-	int	i;
-	int	inside_quotes;
-	int	j;
-
-	i = 0;
-	inside_quotes = 0;
-	while (str[i])
-	{
-		j = 0;
-		while (str[i][j])
-		{
-			if (str[i][j] == '"')
-				inside_quotes = !inside_quotes;
-			if (inside_quotes && (str[i][j] == ' '))
-			{
-				str[i][j] *= -1;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
 void	add_spaces_back(t_dblst *list)
 {
 	t_node	*temp;
@@ -63,7 +38,7 @@ void	add_spaces_back(t_dblst *list)
 		temp = temp->next;
 	}
 }
-
+/*
 void	remove_spaces(char *str)
 {
 	int	i;
@@ -76,6 +51,29 @@ void	remove_spaces(char *str)
 		if (str[i] == '"')
 			inside_quotes = !inside_quotes;
 		if (inside_quotes && (str[i] == ' '))
+		{
+			str[i] *= -1;
+		}
+		i++;
+	}
+}*/
+
+void	remove_spaces(char *str)
+{
+	int	i;
+	int	inside_d_quotes;
+	int	inside_s_quotes;
+
+	i = 0;
+	inside_d_quotes = 0;
+	inside_s_quotes = 0;
+	while (str[i])
+	{
+		if (str[i] == '"')
+			inside_d_quotes = !inside_d_quotes;
+		if (str[i] == '\'')
+			inside_s_quotes = !inside_s_quotes;
+		else if ((inside_d_quotes || inside_s_quotes) && (str[i] == ' '))
 		{
 			str[i] *= -1;
 		}

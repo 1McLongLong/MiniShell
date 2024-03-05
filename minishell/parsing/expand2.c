@@ -41,7 +41,7 @@ void	process_single_quotes(x_node *p_list, t_index *var)
 		var->i++;
 	var->temp = ft_substr(p_list->str, 0, var->i);
 	free(p_list->str);
-	p_list->str = strdup(var->temp);
+	p_list->str = ft_strdup(var->temp);
 	free(var->temp);
 }
 
